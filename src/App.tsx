@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavBar from './NavBar.tsx';
+import Music from './pages/Music.tsx';
+import Contact from './pages/Contact.tsx';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    return (
+        <Router>
+            <NavBar />
+            <main className="content">
+                <Routes>
+                    <Route path="/" element={<Music />} />
+                    <Route path="/music" element={<Music />} />
+                    <Route path="/contact" element={<Contact />} />
+                </Routes>
+            </main>
+        </Router>
+    );
+};
 
 export default App;
