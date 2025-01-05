@@ -13,7 +13,7 @@ const Music: React.FC = () => {
     musicNoteSceneRef.current = new MusicNoteScene({
       widthRatio: 1.0,
       heightRatio: 0.25,
-      numMusicNotes: 10,
+      numMusicNotes: 30,
       canvas: canvasRef.current
     });
 
@@ -32,8 +32,8 @@ const Music: React.FC = () => {
     <div className="music-page">
       <canvas ref={canvasRef} className="music-canvas"></canvas>
       <div className="music-content">
-        <h1>Explore Music in 3D</h1>
-        <p>This is where the 3D music visualization content will go.</p>
+        <h1>Portfolio</h1>
+        <p>This is where the portfolio will go.</p>
       </div>
     </div>
   );

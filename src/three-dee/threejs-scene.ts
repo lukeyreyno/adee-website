@@ -30,7 +30,7 @@ class ThreeJSScene {
     this.camera.position.z = 5;
 
     // Set up renderer
-    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true });
     this.renderer.setSize(calculatedWidth, calculatedHeight);
 
     // Bind resize event
