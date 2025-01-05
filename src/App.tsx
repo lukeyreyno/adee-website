@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar.tsx';
 import Music from './pages/Music.tsx';
 import Contact from './pages/Contact.tsx';
@@ -7,7 +7,7 @@ import './App.css';
 
 const App: React.FC = () => {
     return (
-        <Router basename={`/${process.env.PUBLIC_URL}`}>
+        <HashRouter>
             <NavBar />
             <main className="content">
                 <Routes>
@@ -16,7 +16,7 @@ const App: React.FC = () => {
                     <Route path="/contact" element={<Contact />} />
                 </Routes>
             </main>
-        </Router>
+        </HashRouter>
     );
 };
 
