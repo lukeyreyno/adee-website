@@ -1,31 +1,42 @@
 import React, { useEffect, useRef } from 'react';
 import './Music.css';
+import {MusicNoteScene} from '../three-dee/music-note-scene.ts';
 
 const Music: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const musicNoteSceneRef = useRef<MusicNoteScene | null>(null);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (canvas) {
-            const context = canvas.getContext('2d');
-            if (context) {
-                // Placeholder: Clear canvas with a solid color
-                context.fillStyle = 'black';
-                context.fillRect(0, 0, canvas.width, canvas.height);
-                // Additional rendering logic for 3D can be added here
-            }
-        }
-    }, []);
+  useEffect(() => {
+    if (!canvasRef.current) return;
 
-    return (
-        <div className="music-page">
-            <canvas ref={canvasRef} className="music-canvas"></canvas>
-            <div className="music-content">
-                <h1>Explore Music in 3D</h1>
-                <p>This is where the 3D music visualization content will go.</p>
-            </div>
-        </div>
-    );
+    // Initialize Three.js scene
+    musicNoteSceneRef.current = new MusicNoteScene({
+      widthRatio: 1.0,
+      heightRatio: 0.25,
+      numMusicNotes: 10,
+      canvas: canvasRef.current
+    });
+
+    // Start the animation loop
+    musicNoteSceneRef.current.animate();
+
+    // Cleanup when the component is unmounted
+    return () => {
+      if (musicNoteSceneRef.current) {
+        musicNoteSceneRef.current.dispose();
+      }
+    };
+  }, []);
+
+  return (
+    <div className="music-page">
+      <canvas ref={canvasRef} className="music-canvas"></canvas>
+      <div className="music-content">
+        <h1>Explore Music in 3D</h1>
+        <p>This is where the 3D music visualization content will go.</p>
+      </div>
+    </div>
+  );
 };
 
 export default Music;
