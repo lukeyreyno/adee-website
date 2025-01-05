@@ -1,0 +1,25 @@
+.contact-page {
+    text-align: center;
+    padding: 20px;
+}
+
+.contact-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.contact-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.contact-info {
+    text-align: left;
+    max-width: 400px;
+}
+
+.contact-info p {
+    margin: 10px 0;
+}
