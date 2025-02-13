@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './Music.css';
 import {MusicNoteScene} from '../three-dee/music-note-scene.ts';
+import {VerticalTimeline} from '../modules/vertical-timeline.tsx';
 
 const Music: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,12 +29,34 @@ const Music: React.FC = () => {
     };
   }, []);
 
+  const verticalTimelineNodes = [
+    {
+      id: 1,
+      title: 'First Node',
+      description: 'This is the first node.',
+      date: new Date('2021-01-01')
+    },
+    {
+      id: 2,
+      title: 'Second Node',
+      description: 'This is the second node.',
+      date: new Date('2024-05-19')
+    },
+    {
+      id: 3,
+      title: 'Third Node',
+      description: 'This is the third node.',
+      date: new Date('2024-05-01')
+    }
+  ];
+
   return (
     <div className="music-page">
       <canvas ref={canvasRef} className="music-canvas"></canvas>
       <div className="music-content">
         <h1>Portfolio</h1>
         <p>This is where the portfolio will go.</p>
+        <VerticalTimeline nodes={verticalTimelineNodes} />
       </div>
     </div>
   );
