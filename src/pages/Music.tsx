@@ -31,23 +31,30 @@ const Music: React.FC = () => {
 
   const verticalTimelineNodes = [
     {
-      id: 1,
       title: 'First Node',
       description: 'This is the first node.',
       date: new Date('2021-01-01')
     },
     {
-      id: 2,
       title: 'Second Node',
       description: 'This is the second node.',
       date: new Date('2024-05-19')
     },
     {
-      id: 3,
       title: 'Third Node',
       description: 'This is the third node.',
       date: new Date('2024-05-01')
-    }
+    },
+    {
+      title: 'Fourth Node',
+      description: 'This is the fourth node.',
+      date: new Date('2022-01-01')
+    },
+    {
+      title: 'Fifth Node',
+      description: 'This is the fifth node.',
+      date: new Date('2024-05-01')
+    },
   ];
 
   return (

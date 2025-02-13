@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import './vertical-timeline.css';
+import { min } from 'three/tsl';
 
 interface TimelineNode {
-  id: number;
   title: string;
   description: string;
   date: Date;
@@ -11,56 +12,76 @@ interface TimelineProps {
   nodes: TimelineNode[];
 }
 
-const generateTicks = (nodes: TimelineNode[]) => {
-  const dates = nodes.map(node => node.date);
-  const minDate = new Date(dates.reduce((min, date) => Math.min(min, date.getTime()), Infinity));
-  const maxDate = new Date(dates.reduce((max, date) => Math.max(max, date.getTime()), -Infinity));
+const tickContainerSize = 100;
 
-  console.log(minDate, maxDate);
+const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) => {
+  const dates = nodes.map(node => node.date);
+
+  // Set the min and max dates from the nodes, and add a month buffer
+  const monthBuffer = 1;
+  const minDate = new Date(dates.reduce((min, date) => Math.min(min, date.getTime()), Infinity));
+  minDate.setMonth(minDate.getMonth() - monthBuffer);
+
+  const maxDate = new Date(dates.reduce((max, date) => Math.max(max, date.getTime()), -Infinity));
+  maxDate.setMonth(maxDate.getMonth() + monthBuffer);
   
   const ticks: Date[] = [];
-  const currentDate = new Date(minDate);
+  const currentDate = (ascendingOrder) ? new Date(minDate) : new Date(maxDate);
+  const monthIncrement = (ascendingOrder) ? 1 : -1;
+  const condition = (ascendingOrder) ?
+    () => currentDate <= maxDate : () => currentDate >= minDate;
 
-  while (currentDate <= maxDate) {
-    // Add a new Date object to the ticks array
+  while (condition()) {
     ticks.push(new Date(currentDate));
-    currentDate.setMonth(currentDate.getMonth() + 1);
+    currentDate.setMonth(currentDate.getMonth() + monthIncrement);
   }
 
   return {
     dates: ticks,
     elements: ticks.map((date, index) => (
-      <div key={`${date.getTime()}-${index}`} className="relative flex flex-col items-center w-full">
-        <div className="absolute left-1/2 transform -translate-x-1/2 text-gray-600 text-sm">
+      <div key={index} className='tick-container' style={{ height: `${tickContainerSize}px` }}>
+        <div className='tick'>
           {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
         </div>
-        <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+        <div className='tick-dot'></div>
       </div>
     ))
   };
 };
 
-const VerticalTimeline: React.FC<TimelineProps> = ({ nodes }) => {
+const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
-  const {dates, elements: ticks} = generateTicks(nodes);
+  const {dates, elements: ticks} = generateTicks(nodes, false);
+
+  const createNode = (node: TimelineNode, index: number) => {
+    const monthIndex = dates.findIndex(date => {
+      const year = date.getFullYear() === node.date.getFullYear()
+      const month = date.getMonth() === node.date.getMonth()
+      return year && month; 
+    });
+    return (
+      <div key={index}
+            style={{ 
+              top: `${monthIndex * tickContainerSize}px`,
+              left: index % 2 === 0 ? '60%' : '10%',
+              width: '20%'
+            }}
+            className='node-container'
+            onClick={() => setSelectedNode(selectedNode === index ? null : index)}>
+        <div className='node-dot'></div>
+        <div className='node-content'>
+          <h3 className='node-title'>{node.title}</h3>
+          {selectedNode === index && <p className='node-description'>{node.description}</p>}
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="flex flex-col items-center relative w-full p-4">
-      <div className="absolute w-1 bg-gray-300 h-full left-1/2 transform -translate-x-1/2"></div>
+    <div className='timeline-container'>
+      <div className='timeline-line'></div>
       {ticks}
-      {nodes.map((node) => (
-        <div
-          style={{ top: `${(node.date.getTime() - dates[0].getTime()) / (1000 * 60 * 60 * 24 * 30) * 40}px` }}
-          className="flex flex-col items-center w-full mb-6 cursor-pointer absolute"
-          onClick={() => setSelectedNode(selectedNode === node.id ? null : node.id)}
-        >
-          <div className="relative z-10 w-8 h-8 bg-blue-500 rounded-full border-4 border-white shadow-md"></div>
-          <div className="mt-2 p-2 text-center bg-white shadow-md rounded-lg w-60">
-            <h3 className="font-semibold">{node.title}</h3>
-            {selectedNode === node.id && <p className="mt-2 text-sm text-gray-600">{node.description}</p>}
-          </div>
-        </div>
-      ))}
+      {nodes.map((node, index) => createNode(node, index))}
     </div>
   );
 };
