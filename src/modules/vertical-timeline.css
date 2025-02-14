@@ -5,6 +5,8 @@
   position: relative;
   width: 100%;
   padding: 1rem;
+  user-select: none;
+  -moz-user-select: none;
 }
 
 .timeline-line {
@@ -42,8 +44,9 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 1.5rem; /* 6 */
-  cursor: pointer;
   position: absolute;
+  transition: z-index 0.03s;
+  pointer-events: none;
 }
 
 .node-dot {
@@ -53,6 +56,8 @@
   border-radius: 50%;
   border: 0.25rem solid #ffffff; /* border-4 border-white */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .node-content {
@@ -62,6 +67,8 @@
   background-color: #ffffff; /* bg-white */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
   border-radius: 0.5rem; /* rounded-lg */
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .node-title {

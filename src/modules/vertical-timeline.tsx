@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './vertical-timeline.css';
-import { min } from 'three/tsl';
 
 interface TimelineNode {
   title: string;
@@ -51,25 +50,61 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
 
 const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
+  const [hoveredNodes, setHoveredNodes] = useState<number[]>([]);
   const {dates, elements: ticks} = generateTicks(nodes, false);
 
+  const monthNodeCounts: Record<number, number> = {};
   const createNode = (node: TimelineNode, index: number) => {
     const monthIndex = dates.findIndex(date => {
       const year = date.getFullYear() === node.date.getFullYear()
       const month = date.getMonth() === node.date.getMonth()
       return year && month; 
     });
+
+    const monthSideIndex = monthIndex * 2 + (index % 2);
+
+    // Track how many nodes exist for the current month
+    if (!monthNodeCounts[monthSideIndex]) {
+      monthNodeCounts[monthSideIndex] = 0;
+    }
+
+    const verticalOffsetMultiplier = 60;
+    const horizontalOffsetMultiplier = 30;
+    const verticalOffset = monthNodeCounts[monthSideIndex] * verticalOffsetMultiplier;
+    const horizontalOffset = monthNodeCounts[monthSideIndex] * horizontalOffsetMultiplier;
+    monthNodeCounts[monthSideIndex]++;
+
+    const handleMouseEnter = () => {
+      setHoveredNodes(prev => {
+        const newHoveredNodes = prev.filter(i => i !== index);
+        newHoveredNodes.push(index);
+        return newHoveredNodes;
+      });
+    };
+
+    const handleMouseLeave = () => {};
+
+    const zIndexBase = 10;
+    const zIndex = hoveredNodes.includes(index) ? hoveredNodes.indexOf(index) + zIndexBase : 1;
+
     return (
       <div key={index}
             style={{ 
-              top: `${monthIndex * tickContainerSize}px`,
-              left: index % 2 === 0 ? '60%' : '10%',
-              width: '20%'
+              top: `${monthIndex * tickContainerSize + verticalOffset}px`,
+              left: index % 2 ? `calc(10% + ${horizontalOffset}px)` : `calc(60% + ${horizontalOffset}px)`,
+              width: '20%',
+              zIndex: zIndex,
             }}
-            className='node-container'
-            onClick={() => setSelectedNode(selectedNode === index ? null : index)}>
-        <div className='node-dot'></div>
-        <div className='node-content'>
+            className='node-container'>
+        <div className='node-dot'
+              onClick={() => setSelectedNode(selectedNode === index ? null : index)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}>
+        </div>
+        <div className='node-content'
+            onClick={() => setSelectedNode(selectedNode === index ? null : index)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}>
           <h3 className='node-title'>{node.title}</h3>
           {selectedNode === index && <p className='node-description'>{node.description}</p>}
         </div>

@@ -43,7 +43,7 @@ const Music: React.FC = () => {
     {
       title: 'Third Node',
       description: 'This is the third node.',
-      date: new Date('2024-05-01')
+      date: new Date('2024-05-08')
     },
     {
       title: 'Fourth Node',
@@ -53,7 +53,27 @@ const Music: React.FC = () => {
     {
       title: 'Fifth Node',
       description: 'This is the fifth node.',
-      date: new Date('2024-05-01')
+      date: new Date('2024-05-09')
+    },
+    {
+      title: 'Sixth Node',
+      description: 'This is the sixth node.',
+      date: new Date('2024-05-10')
+    },
+    {
+      title: 'Seventh Node',
+      description: 'This is the seventh node.',
+      date: new Date('2024-03-10')
+    },
+    {
+      title: 'Eighth Node',
+      description: 'This is the Eighth node.',
+      date: new Date('2024-04-10')
+    },
+    {
+      title: 'Ninth Node',
+      description: 'This is the Ninth node.',
+      date: new Date('2024-04-12')
     },
   ];
 
