@@ -11,7 +11,7 @@ interface TimelineProps {
   nodes: TimelineNode[];
 }
 
-const tickContainerSize = 100;
+const tickContainerSize = 20;
 
 const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) => {
   const dates = nodes.map(node => node.date);
@@ -38,7 +38,7 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
   return {
     dates: ticks,
     elements: ticks.map((date, index) => (
-      <div key={index} className='tick-container' style={{ height: `${tickContainerSize}px` }}>
+      <div key={index} className='tick-container' style={{ height: `${tickContainerSize}vh` }}>
         <div className='tick'>
           {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
         </div>
@@ -55,6 +55,10 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
 
   const monthNodeCounts: Record<number, number> = {};
   const createNode = (node: TimelineNode, index: number) => {
+    const selectedNodeBehavior = () => {
+      return selectedNode === index && <p className='node-description'>{node.description}</p>;
+    }
+
     const monthIndex = dates.findIndex(date => {
       const year = date.getFullYear() === node.date.getFullYear()
       const month = date.getMonth() === node.date.getMonth()
@@ -68,7 +72,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
       monthNodeCounts[monthSideIndex] = 0;
     }
 
-    const verticalOffsetMultiplier = 60;
+    const verticalOffsetMultiplier = 0.5; // in vh
     const horizontalOffsetMultiplier = 30;
     const verticalOffset = monthNodeCounts[monthSideIndex] * verticalOffsetMultiplier;
     const horizontalOffset = monthNodeCounts[monthSideIndex] * horizontalOffsetMultiplier;
@@ -90,7 +94,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
     return (
       <div key={index}
             style={{ 
-              top: `${monthIndex * tickContainerSize + verticalOffset}px`,
+              top: `${monthIndex * tickContainerSize + verticalOffset}vh`,
               left: index % 2 ? `calc(10% + ${horizontalOffset}px)` : `calc(60% + ${horizontalOffset}px)`,
               width: '20%',
               zIndex: zIndex,
@@ -106,7 +110,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}>
           <h3 className='node-title'>{node.title}</h3>
-          {selectedNode === index && <p className='node-description'>{node.description}</p>}
+          {selectedNodeBehavior()}
         </div>
       </div>
     );

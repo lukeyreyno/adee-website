@@ -75,6 +75,11 @@ const Music: React.FC = () => {
       description: 'This is the Ninth node.',
       date: new Date('2024-04-12')
     },
+    {
+      title: 'Tenth Node',
+      description: 'This is the Tenth node. Which has a long description...'.repeat(40),
+      date: new Date('2024-05-08')
+    },
   ];
 
   return (
