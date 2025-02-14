@@ -50,10 +50,12 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
 
 const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
+  const [currentlyHoveredNode, setcurrentlyHoveredNode] = useState<number | null>(null);
   const [hoveredNodes, setHoveredNodes] = useState<number[]>([]);
-  const {dates, elements: ticks} = generateTicks(nodes, false);
 
+  const {dates, elements: ticks} = generateTicks(nodes, false);
   const monthNodeCounts: Record<number, number> = {};
+
   const createNode = (node: TimelineNode, index: number) => {
     const selectedNodeBehavior = () => {
       return selectedNode === index && <p className='node-description'>{node.description}</p>;
@@ -78,7 +80,12 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
     const horizontalOffset = monthNodeCounts[monthSideIndex] * horizontalOffsetMultiplier;
     monthNodeCounts[monthSideIndex]++;
 
+    const handleMouseClick = () => {
+      setSelectedNode(selectedNode === index ? null : index);
+    }
+
     const handleMouseEnter = () => {
+      setcurrentlyHoveredNode(index);
       setHoveredNodes(prev => {
         const newHoveredNodes = prev.filter(i => i !== index);
         newHoveredNodes.push(index);
@@ -86,10 +93,22 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
       });
     };
 
-    const handleMouseLeave = () => {};
+    const handleMouseLeave = () => {
+      setcurrentlyHoveredNode(null);
+    };
 
     const zIndexBase = 10;
     const zIndex = hoveredNodes.includes(index) ? hoveredNodes.indexOf(index) + zIndexBase : 1;
+
+    const chooseDotColor = () => {
+      if (selectedNode === index) {
+        return 'var(--green-dot)';
+      } else if (currentlyHoveredNode === index) {
+        return 'var(--yellow-dot)';
+      } else {
+        return 'var(--blue-dot)';
+      }
+    }
 
     return (
       <div key={index}
@@ -101,12 +120,13 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
             }}
             className='node-container'>
         <div className='node-dot'
-              onClick={() => setSelectedNode(selectedNode === index ? null : index)}
+              style={{backgroundColor: chooseDotColor()}}
+              onClick={handleMouseClick}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}>
         </div>
         <div className='node-content'
-            onClick={() => setSelectedNode(selectedNode === index ? null : index)}
+            onClick={handleMouseClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}>
           <h3 className='node-title'>{node.title}</h3>
