@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './Music.css';
 import {MusicNoteScene} from '../three-dee/music-note-scene.ts';
-import {VerticalTimeline} from '../modules/vertical-timeline.tsx';
+import {TimelineNode, VerticalTimeline} from '../modules/vertical-timeline.tsx';
 
 const Music: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,7 +29,7 @@ const Music: React.FC = () => {
     };
   }, []);
 
-  const verticalTimelineNodes = [
+  const verticalTimelineNodes: TimelineNode[] = [
     {
       title: 'First Node',
       description: 'This is the first node.',
@@ -82,13 +82,15 @@ const Music: React.FC = () => {
     },
   ];
 
+  const filterNodes = (node: TimelineNode) => true;
+
   return (
     <div className="music-page">
       <canvas ref={canvasRef} className="music-canvas"></canvas>
       <div className="music-content">
         <h1>Portfolio</h1>
         <p>This is where the portfolio will go.</p>
-        <VerticalTimeline nodes={verticalTimelineNodes} />
+        <VerticalTimeline nodes={verticalTimelineNodes} filterPredicate={filterNodes} />
       </div>
     </div>
   );

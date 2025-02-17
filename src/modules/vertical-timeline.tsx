@@ -9,6 +9,7 @@ interface TimelineNode {
 
 interface TimelineProps {
   nodes: TimelineNode[];
+  filterPredicate?: (node: TimelineNode) => boolean;
 }
 
 const tickContainerSize = 20;
@@ -48,12 +49,13 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
   };
 };
 
-const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
+const VerticalTimeline: React.FC<TimelineProps> = ({nodes, filterPredicate}) => {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
   const [currentlyHoveredNode, setcurrentlyHoveredNode] = useState<number | null>(null);
   const [hoveredNodes, setHoveredNodes] = useState<number[]>([]);
 
-  const {dates, elements: ticks} = generateTicks(nodes, false);
+  const filteredNodes = filterPredicate ? nodes.filter(filterPredicate) : nodes;
+  const {dates, elements: ticks} = generateTicks(filteredNodes, false);
   const monthNodeCounts: Record<number, number> = {};
 
   const createNode = (node: TimelineNode, index: number) => {
@@ -140,9 +142,9 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes}) => {
     <div className='timeline-container'>
       <div className='timeline-line'></div>
       {ticks}
-      {nodes.map((node, index) => createNode(node, index))}
+      {filteredNodes.map((node, index) => createNode(node, index))}
     </div>
   );
 };
 
-export {VerticalTimeline};
+export {type TimelineNode, VerticalTimeline};
