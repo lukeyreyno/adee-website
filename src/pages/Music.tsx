@@ -1,12 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Music.css';
 import {MusicNoteScene} from '../three-dee/music-note-scene.ts';
-import {type ButtonData, ButtonGroup} from '../modules/button-group.tsx';
-import {type TimelineNode, type NodeFilterPredicate, VerticalTimeline} from '../modules/vertical-timeline.tsx';
+import {type ButtonData, ButtonGroup} from '../components/button-group.tsx';
+import {type TimelineNode, type NodeFilterPredicate, VerticalTimeline} from '../components/vertical-timeline.tsx';
+
+const NODE_DATA_URL = './data/portfolio_nodes.json';
 
 const Music: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const musicNoteSceneRef = useRef<MusicNoteScene | null>(null);
+  const [timelineData, setTimelineData] = useState<TimelineNode[]>([]);
 
   const [nodeFilter, setNodeFilter] = useState<NodeFilterPredicate>(
     () => (node: TimelineNode) => true
@@ -26,6 +29,40 @@ const Music: React.FC = () => {
     // Start the animation loop
     musicNoteSceneRef.current.animate();
 
+    fetch(NODE_DATA_URL)
+      .then(response => response.json())
+      .then(data => {
+        interface RawTimelineNode {
+          title: string;
+          category?: string;
+          description: string;
+          date?: string | Date | 'current';
+          startDate?: string | Date;
+          endDate?: string | Date | 'current';
+        }
+
+        const parsedData = data.map((item: RawTimelineNode) => {
+          if (item.date !== undefined) {
+            item.date = (item.date === 'current') ? new Date() : new Date(item.date);
+          }
+
+          if (item.startDate !== undefined && item.endDate !== undefined) {
+            item.startDate = new Date(item.startDate);
+            item.endDate = (item.endDate === 'current') ? new Date() : new Date(item.endDate);
+            item.date = item.date ?? new Date((item.startDate.getTime() + item.endDate.getTime()) / 2);
+          }
+
+          if (item.date === undefined) {
+            console.error('Error parsing timeline data:', item);
+            return null;
+          }
+
+          return item;
+        }).filter((item: RawTimelineNode) => item !== null) as TimelineNode[];
+        setTimelineData(parsedData);
+      })
+      .catch(error => console.error('Error fetching timeline data:', error));
+
     // Cleanup when the component is unmounted
     return () => {
       if (musicNoteSceneRef.current) {
@@ -33,69 +70,6 @@ const Music: React.FC = () => {
       }
     };
   }, []);
-
-  const verticalTimelineNodes: TimelineNode[] = [
-    {
-      title: 'First Node',
-      category: 'Production Experience',
-      description: 'This is the first node.',
-      date: new Date('2021-01-01')
-    },
-    {
-      title: 'Second Node',
-      category: 'Performance Credits',
-      description: 'This is the second node.',
-      date: new Date('2024-05-19')
-    },
-    {
-      title: 'Third Node',
-      category: 'Teaching Experience',
-      description: 'This is the third node.',
-      date: new Date('2024-05-08')
-    },
-    {
-      title: 'Fourth Node',
-      category: 'Production Experience',
-      description: 'This is the fourth node.',
-      date: new Date('2022-01-01')
-    },
-    {
-      title: 'Fifth Node',
-      category: 'Teaching Experience',
-      description: 'This is the fifth node.',
-      date: new Date('2024-05-09')
-    },
-    {
-      title: 'Sixth Node',
-      category: 'Performance Credits',
-      description: 'This is the sixth node.',
-      date: new Date('2024-05-10')
-    },
-    {
-      title: 'Seventh Node',
-      category: 'Accompaniment Experience',
-      description: 'This is the seventh node.',
-      date: new Date('2024-03-10')
-    },
-    {
-      title: 'Eighth Node',
-      category: 'Accompaniment Experience',
-      description: 'This is the Eighth node.',
-      date: new Date('2024-04-10')
-    },
-    {
-      title: 'Ninth Node',
-      category: 'Teaching Experience',
-      description: 'This is the Ninth node.',
-      date: new Date('2024-04-12')
-    },
-    {
-      title: 'Tenth Node',
-      category: 'Performance Credits',
-      description: 'This is the Tenth node. Which has a long description...'.repeat(40),
-      date: new Date('2024-05-08')
-    },
-  ];
 
   const nodeFilterButtons: ButtonData[] = [
     {
@@ -135,7 +109,7 @@ const Music: React.FC = () => {
       <canvas ref={canvasRef} className="music-canvas"></canvas>
       <div className="music-content">
         <ButtonGroup buttons={nodeFilterButtons} buttonType='select' defaultSelected={[0]} />
-        <VerticalTimeline nodes={verticalTimelineNodes} filterPredicate={nodeFilter} />
+        <VerticalTimeline nodes={timelineData} filterPredicate={nodeFilter} />
       </div>
     </div>
   );

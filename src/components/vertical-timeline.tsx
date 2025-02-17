@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './vertical-timeline.css';
 
 interface TimelineNode {
@@ -6,6 +6,11 @@ interface TimelineNode {
   category?: string;
   description: string;
   date: Date;
+}
+
+interface RangedTimelineNode extends TimelineNode {
+  startDate: Date;
+  endDate: Date;
 }
 
 interface TimelineProps {
@@ -27,7 +32,7 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
 
   const maxDate = new Date(dates.reduce((max, date) => Math.max(max, date.getTime()), -Infinity));
   maxDate.setMonth(maxDate.getMonth() + monthBuffer);
-  
+
   const ticks: Date[] = [];
   const currentDate = (ascendingOrder) ? new Date(minDate) : new Date(maxDate);
   const monthIncrement = (ascendingOrder) ? 1 : -1;
@@ -52,13 +57,13 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
   };
 };
 
-const VerticalTimeline: React.FC<TimelineProps> = ({nodes, filterPredicate}) => {
+const VerticalTimeline: React.FC<TimelineProps> = ({ nodes, filterPredicate }) => {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
   const [currentlyHoveredNode, setcurrentlyHoveredNode] = useState<number | null>(null);
   const [hoveredNodes, setHoveredNodes] = useState<number[]>([]);
 
   const filteredNodes = filterPredicate ? nodes.filter(filterPredicate) : nodes;
-  const {dates, elements: ticks} = generateTicks(filteredNodes, false);
+  const { dates, elements: ticks } = generateTicks(filteredNodes, false);
   const monthNodeCounts: Record<number, number> = {};
 
   useEffect(() => {
@@ -73,7 +78,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes, filterPredicate}) => 
     const monthIndex = dates.findIndex(date => {
       const year = date.getFullYear() === node.date.getFullYear()
       const month = date.getMonth() === node.date.getMonth()
-      return year && month; 
+      return year && month;
     });
 
     const monthSideIndex = monthIndex * 2 + (index % 2);
@@ -121,23 +126,23 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes, filterPredicate}) => 
 
     return (
       <div key={index}
-            style={{ 
-              top: `${monthIndex * tickContainerSize + verticalOffset}vh`,
-              left: index % 2 ? `calc(10% + ${horizontalOffset}px)` : `calc(60% + ${horizontalOffset}px)`,
-              width: '20%',
-              zIndex: zIndex,
-            }}
-            className='node-container'>
+        style={{
+          top: `${monthIndex * tickContainerSize + verticalOffset}vh`,
+          left: index % 2 ? `calc(10% + ${horizontalOffset}px)` : `calc(60% + ${horizontalOffset}px)`,
+          width: '20%',
+          zIndex: zIndex,
+        }}
+        className='node-container'>
         <div className='node-dot'
-              style={{backgroundColor: chooseDotColor()}}
-              onClick={handleMouseClick}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}>
+          style={{ backgroundColor: chooseDotColor() }}
+          onClick={handleMouseClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
         </div>
         <div className='node-content'
-            onClick={handleMouseClick}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}>
+          onClick={handleMouseClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
           <h3 className='node-title'>{node.title}</h3>
           {selectedNodeBehavior()}
         </div>
@@ -154,4 +159,9 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes, filterPredicate}) => 
   );
 };
 
-export {type TimelineNode, type NodeFilterPredicate, VerticalTimeline};
+export {
+  type TimelineNode,
+  type NodeFilterPredicate,
+  type RangedTimelineNode,
+  VerticalTimeline
+};
