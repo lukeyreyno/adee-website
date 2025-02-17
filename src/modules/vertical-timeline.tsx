@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './vertical-timeline.css';
 
 interface TimelineNode {
   title: string;
+  category?: string;
   description: string;
   date: Date;
 }
@@ -11,6 +12,8 @@ interface TimelineProps {
   nodes: TimelineNode[];
   filterPredicate?: (node: TimelineNode) => boolean;
 }
+
+type NodeFilterPredicate = (node: TimelineNode) => boolean;
 
 const tickContainerSize = 20;
 
@@ -147,4 +150,4 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes, filterPredicate}) => 
   );
 };
 
-export {type TimelineNode, VerticalTimeline};
+export {type TimelineNode, type NodeFilterPredicate, VerticalTimeline};

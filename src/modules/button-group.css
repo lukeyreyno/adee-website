@@ -1,0 +1,39 @@
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5%;
+  overflow: auto;
+  flex-wrap: wrap;
+}
+
+.button-selected {
+  background-color: #004085;
+}
+
+.button-default {
+  background-color: #007bff;
+}
+
+.button-group button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 100px;
+  max-width: 200px;
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+}
+
+.button-group button:active {
+  background-color: #004085;
+}
+
+.button-group button:focus {
+  outline: none;
+}
