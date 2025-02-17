@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './vertical-timeline.css';
 
 interface TimelineNode {
@@ -60,6 +60,10 @@ const VerticalTimeline: React.FC<TimelineProps> = ({nodes, filterPredicate}) => 
   const filteredNodes = filterPredicate ? nodes.filter(filterPredicate) : nodes;
   const {dates, elements: ticks} = generateTicks(filteredNodes, false);
   const monthNodeCounts: Record<number, number> = {};
+
+  useEffect(() => {
+    setSelectedNode(null);
+  }, [filterPredicate]);
 
   const createNode = (node: TimelineNode, index: number) => {
     const selectedNodeBehavior = () => {
