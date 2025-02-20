@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  type ReactNode,
+  useEffect,
+  useState
+} from 'react';
 import './vertical-timeline.css';
 
 interface TimelineNode {
@@ -13,8 +17,11 @@ interface RangedTimelineNode extends TimelineNode {
   endDate: Date;
 }
 
+type TimelineDisplayMode = 'default' | 'minimal' | 'minimal-left';
+
 interface TimelineProps {
   nodes: TimelineNode[];
+  displayMode?: TimelineDisplayMode;
   filterPredicate?: (node: TimelineNode) => boolean;
 }
 
@@ -22,7 +29,7 @@ type NodeFilterPredicate = (node: TimelineNode) => boolean;
 
 const tickContainerSize = 20;
 
-const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) => {
+const generateTicks = (nodes: TimelineNode[], displayMode: TimelineDisplayMode, ascendingOrder: boolean = true) => {
   const dates = nodes.map(node => node.date);
 
   // Set the min and max dates from the nodes, and add a month buffer
@@ -44,11 +51,37 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
     currentDate.setMonth(currentDate.getMonth() + monthIncrement);
   }
 
+    let tickContainerStyle: React.CSSProperties = {
+      height: `${tickContainerSize}vh`,
+    };
+    let tickLabelStyle: React.CSSProperties;
+    switch (displayMode) {
+      case 'minimal-left': {
+        tickContainerStyle = {
+          ...tickContainerStyle,
+          alignItems: 'left',
+        };
+        break;
+      }
+      case 'minimal':
+      case 'default':
+      default: {
+        tickContainerStyle = {
+          ...tickContainerStyle,
+          alignItems: 'center',
+        };
+        tickLabelStyle = {
+          transform: 'translateX(-50%)',
+        }
+      }
+    }
+
   return {
     dates: ticks,
     elements: ticks.map((date, index) => (
-      <div key={index} className='tick-container' style={{ height: `${tickContainerSize}vh` }}>
-        <div className='tick'>
+      <div key={index} className='tick-container' style={tickContainerStyle}>
+        <div className='tick-label'
+          style={tickLabelStyle}>
           {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
         </div>
         <div className='tick-dot'></div>
@@ -57,13 +90,17 @@ const generateTicks = (nodes: TimelineNode[], ascendingOrder: boolean = true) =>
   };
 };
 
-const VerticalTimeline: React.FC<TimelineProps> = ({ nodes, filterPredicate }) => {
+const VerticalTimeline: React.FC<TimelineProps> = ({
+  nodes,
+  displayMode = 'default',
+  filterPredicate = () => true,
+}) => {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
   const [currentlyHoveredNode, setcurrentlyHoveredNode] = useState<number | null>(null);
   const [hoveredNodes, setHoveredNodes] = useState<number[]>([]);
 
-  const filteredNodes = filterPredicate ? nodes.filter(filterPredicate) : nodes;
-  const { dates, elements: ticks } = generateTicks(filteredNodes, false);
+  const filteredNodes = nodes.filter(filterPredicate);
+  const { dates, elements: ticks } = generateTicks(filteredNodes, displayMode, false);
   const monthNodeCounts: Record<number, number> = {};
 
   useEffect(() => {
@@ -124,14 +161,51 @@ const VerticalTimeline: React.FC<TimelineProps> = ({ nodes, filterPredicate }) =
       }
     }
 
-    return (
-      <div key={index}
-        style={{
+    let nodeContainerDiv: ReactNode;
+    let nodeContainerStyle: React.CSSProperties = {};
+    switch (displayMode) {
+      case 'minimal-left':
+      case 'minimal': {
+        if (currentlyHoveredNode === index || selectedNode === index) {
+          nodeContainerDiv = <div className='node-content'
+            onClick={handleMouseClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}>
+            <h3 className='node-title'>{node.title}</h3>
+            {selectedNodeBehavior()}
+          </div>
+        }
+
+        nodeContainerStyle = {
+          top: `${monthIndex * tickContainerSize}vh`,
+          left: `calc(50% + ${horizontalOffset}px)`,
+          transform: 'translateX(-50%)',
+          zIndex: zIndex,
+        };
+        break;
+      }
+      case 'default':
+      default: {
+        nodeContainerDiv = <div className='node-content'
+          onClick={handleMouseClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
+          <h3 className='node-title'>{node.title}</h3>
+          {selectedNodeBehavior()}
+        </div>
+        nodeContainerStyle = {
           top: `${monthIndex * tickContainerSize + verticalOffset}vh`,
           left: index % 2 ? `calc(10% + ${horizontalOffset}px)` : `calc(60% + ${horizontalOffset}px)`,
           width: '20%',
           zIndex: zIndex,
-        }}
+        }
+        break;
+      }
+    }
+
+    return (
+      <div key={index}
+        style={nodeContainerStyle}
         className='node-container'>
         <div className='node-dot'
           style={{ backgroundColor: chooseDotColor() }}
@@ -139,20 +213,38 @@ const VerticalTimeline: React.FC<TimelineProps> = ({ nodes, filterPredicate }) =
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
         </div>
-        <div className='node-content'
-          onClick={handleMouseClick}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}>
-          <h3 className='node-title'>{node.title}</h3>
-          {selectedNodeBehavior()}
-        </div>
+        {nodeContainerDiv}
       </div>
     );
   };
 
+  const createTimelineLine = () => {
+    let lineStyle: React.CSSProperties;
+    switch (displayMode) {
+      case 'minimal-left': {
+        lineStyle = {
+          width: '5px',
+          left: '0%',
+        };
+        break;
+      }
+      case 'minimal':
+      case 'default':
+      default: {
+        lineStyle = {
+          width: '1px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        };
+      }
+    }
+
+    return <div className='timeline-line' style={lineStyle}></div>;
+  }
+
   return (
     <div className='timeline-container'>
-      <div className='timeline-line'></div>
+      {createTimelineLine()}
       {ticks}
       {filteredNodes.map((node, index) => createNode(node, index))}
     </div>
@@ -163,5 +255,6 @@ export {
   type TimelineNode,
   type NodeFilterPredicate,
   type RangedTimelineNode,
+  type TimelineProps,
   VerticalTimeline
 };
