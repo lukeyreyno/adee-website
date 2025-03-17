@@ -4,14 +4,18 @@ import './Contact.css';
 const Contact: React.FC = () => {
     return (
         <div className="contact-page">
-            <h1>Contact Us</h1>
+            <h1>Contact Me</h1>
             <div className="contact-content">
-                <img src="https://via.placeholder.com/400" alt="Contact Placeholder" className="contact-image" />
-                <div className="contact-info">
-                    <p><strong>Address:</strong> 1234 Mockup Lane, Imaginary City, Dreamland</p>
-                    <p><strong>Phone:</strong> (123) 456-7890</p>
-                    <p><strong>Email:</strong> contact@example.com</p>
-                </div>
+                <iframe
+                    title="Contact Form"
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSdk9u-o0iqMbrKuJNmDEikDKapVauR7CwpG4EE_BGfQSfwoLg/viewform?embedded=true"
+                    width="640"
+                    height="800"
+                    frameBorder="0"
+                    marginHeight="0"
+                    marginWidth="0">
+                    Loading…
+                </iframe>
             </div>
         </div>
     );
