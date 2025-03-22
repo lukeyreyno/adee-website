@@ -81,6 +81,7 @@ const NavBar: React.FC = () => {
       <div className={`navbar-links-container ${isNavVisible ? 'visible' : 'hidden'}`}>
         <ul className="navbar-links">
           <li><Link to="/home">Home</Link></li>
+          <li><Link to="/resume">Resume</Link></li>
           <li><Link to="/music">Music</Link></li>
           <li><Link to="/events">Events</Link></li>
           <li><Link to="/contact">Contact</Link></li>
@@ -92,7 +93,7 @@ const NavBar: React.FC = () => {
   return (
     <nav className="navbar" ref={navbarRef}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">Amanda</Link>
+        <Link to="/" className="navbar-logo">Amanda Dee</Link>
         <button className="navbar-toggle" onClick={toggleNavVisibility}>☰</button>
         {!isSmallScreen && navBarLinksContainer()}
       </div>

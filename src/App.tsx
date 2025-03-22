@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar.tsx';
 import Music from './pages/Music.tsx';
 import Home from './pages/Home.tsx';
+import Resume from './pages/Resume.tsx';
 import Events from './pages/Events.tsx';
 import Contact from './pages/Contact.tsx';
 import './App.css';
@@ -15,6 +16,7 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/home" element={<Home />} />
+                    <Route path="/resume" element={<Resume />} />
                     <Route path="/music" element={<Music />} />
                     <Route path="/events" element={<Events />} />
                     <Route path="/contact" element={<Contact />} />
