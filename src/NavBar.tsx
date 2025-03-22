@@ -93,7 +93,7 @@ const NavBar: React.FC = () => {
   return (
     <nav className="navbar" ref={navbarRef}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">Amanda</Link>
+        <Link to="/" className="navbar-logo">Amanda Dee</Link>
         <button className="navbar-toggle" onClick={toggleNavVisibility}>☰</button>
         {!isSmallScreen && navBarLinksContainer()}
       </div>

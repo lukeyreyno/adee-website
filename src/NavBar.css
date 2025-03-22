@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap');
+
 :root {
   --navbar-height: 60px;
 }
@@ -24,12 +26,14 @@
 }
 
 .navbar-logo {
+  font-family: 'Homemade Apple', cursive;
   font-size: 1.5em;
   color: white;
   text-decoration: none;
 }
 
 .navbar-links {
+  font-family: cursive;
   list-style: none;
   display: flex;
   gap: 15px;
