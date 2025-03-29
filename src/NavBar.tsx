@@ -80,11 +80,11 @@ const NavBar: React.FC = () => {
     return (
       <div className={`navbar-links-container ${isNavVisible ? 'visible' : 'hidden'}`}>
         <ul className="navbar-links">
-          <li><Link to="/home">Home</Link></li>
-          <li><Link to="/resume">Resume</Link></li>
-          <li><Link to="/music">Music</Link></li>
-          <li><Link to="/events">Events</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
+          <li><Link to="/home" onClick={toggleNavVisibility}>Home</Link></li>
+          <li><Link to="/resume" onClick={toggleNavVisibility}>Resume</Link></li>
+          <li><Link to="/music" onClick={toggleNavVisibility}>Music</Link></li>
+          <li><Link to="/events" onClick={toggleNavVisibility}>Events</Link></li>
+          <li><Link to="/contact" onClick={toggleNavVisibility}>Contact</Link></li>
         </ul>
       </div>
     )

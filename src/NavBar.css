@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap');
 
 :root {
   --navbar-height: 60px;
@@ -26,14 +26,14 @@
 }
 
 .navbar-logo {
-  font-family: 'Homemade Apple', cursive;
+  font-family: 'Nothing You Could Do', cursive;
   font-size: 1.5em;
   color: white;
   text-decoration: none;
 }
 
 .navbar-links {
-  font-family: cursive;
+  font-family: 'Nothing You Could Do', cursive;
   list-style: none;
   display: flex;
   gap: 15px;
