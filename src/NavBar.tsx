@@ -21,6 +21,12 @@ const NavBar: React.FC = () => {
     setIsNavVisible(!isNavVisible);
   };
 
+  const hideNavDropdown = () => {
+    if (isNavVisible && isSmallScreen) {
+      setIsNavVisible(false);
+    }
+  }
+
   const applyMediaQueryStyles = () => {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -80,11 +86,11 @@ const NavBar: React.FC = () => {
     return (
       <div className={`navbar-links-container ${isNavVisible ? 'visible' : 'hidden'}`}>
         <ul className="navbar-links">
-          <li><Link to="/home" onClick={toggleNavVisibility}>Home</Link></li>
-          <li><Link to="/resume" onClick={toggleNavVisibility}>Resume</Link></li>
-          <li><Link to="/music" onClick={toggleNavVisibility}>Music</Link></li>
-          <li><Link to="/events" onClick={toggleNavVisibility}>Events</Link></li>
-          <li><Link to="/contact" onClick={toggleNavVisibility}>Contact</Link></li>
+          <li><Link to="/home" onClick={hideNavDropdown}>Home</Link></li>
+          <li><Link to="/resume" onClick={hideNavDropdown}>Resume</Link></li>
+          <li><Link to="/music" onClick={hideNavDropdown}>Music</Link></li>
+          <li><Link to="/events" onClick={hideNavDropdown}>Events</Link></li>
+          <li><Link to="/contact" onClick={hideNavDropdown}>Contact</Link></li>
         </ul>
       </div>
     )
@@ -93,7 +99,7 @@ const NavBar: React.FC = () => {
   return (
     <nav className="navbar" ref={navbarRef}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">Amanda Dee</Link>
+        <Link to="/" onClick={hideNavDropdown} className="navbar-logo">Amanda Dee</Link>
         <button className="navbar-toggle" onClick={toggleNavVisibility}>☰</button>
         {!isSmallScreen && navBarLinksContainer()}
       </div>

@@ -34,19 +34,26 @@
   height: 100%;
 }
 
+.arrow:hover {
+  background: rgba(1, 1, 1, 0.7);
+}
+
 .left-arrow {
   left: 0px;
-  padding: 0 10px;
+  padding: 0 5%;
 }
 
 .right-arrow {
   right: 0px;
-  padding: 0 10px;
+  padding: 0 5%;
 }
 
 .dots {
   display: flex;
   justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 10px;
 }
 
