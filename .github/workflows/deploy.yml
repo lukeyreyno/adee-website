@@ -13,26 +13,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Check out the code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Set up Node.js
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
         cache: 'npm'
 
-    # Step 3: Install dependencies
     - name: Install dependencies
       run: npm install --force
 
-    # Step 4: Build the project
+    - name: Set up environment variables
+      run: |
+        echo "${{ secrets.DOT_ENVIRONMENT }}" > .env
+        set -a
+        source .env
+        set +a
+
     - name: Build the project
       run: npm run build
 
-    # Step 5: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
