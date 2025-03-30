@@ -1,13 +1,19 @@
 import React from 'react';
 import './Home.css';
 
+import {GooglePhotoSlideShow} from '../components/google-photo-slide-show.tsx';
+
 const HEADSHOT_IMG_PATH = './images/headshot.jpg';
+
+const FOLDER_ID = process.env.REACT_APP_GOOGLE_DRIVE_FOLDER_ID!;
+const GOOGLE_DRIVE_API_KEY = process.env.REACT_APP_GOOGLE_DRIVE_API_KEY!;
 
 const Home: React.FC = () => {
   return (
     <div className='home-page'>
       <img src={HEADSHOT_IMG_PATH} alt='Headshot' className='headshot' />
       <h1 className='title'>Amanda Dee</h1>
+      <GooglePhotoSlideShow folderId={FOLDER_ID} apiKey={GOOGLE_DRIVE_API_KEY} />
         <div className='bio'>
             <p>Hi there!</p>
             <p>
