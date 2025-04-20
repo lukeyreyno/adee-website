@@ -29,28 +29,42 @@ type NodeFilterPredicate = (node: TimelineNode) => boolean;
 
 const tickContainerSize = 20;
 
-const generateTicks = (nodes: TimelineNode[], displayMode: TimelineDisplayMode, ascendingOrder: boolean = true) => {
+const getDates = (
+  nodes: TimelineNode[],
+  ascendingOrder: boolean = true
+) => {
   const dates = nodes.map(node => node.date);
 
   // Set the min and max dates from the nodes, and add a month buffer
   const monthBuffer = 1;
-  const minDate = new Date(dates.reduce((min, date) => Math.min(min, date.getTime()), Infinity));
+  const minDate = new Date(dates.reduce(
+    (min, date) => Math.min(min, date.getTime()), Infinity
+  ));
   minDate.setMonth(minDate.getMonth() - monthBuffer);
 
-  const maxDate = new Date(dates.reduce((max, date) => Math.max(max, date.getTime()), -Infinity));
+  const maxDate = new Date(dates.reduce(
+    (max, date) => Math.max(max, date.getTime()), -Infinity
+  ));
   maxDate.setMonth(maxDate.getMonth() + monthBuffer);
 
-  const ticks: Date[] = [];
+  const processedDates: Date[] = [];
   const currentDate = (ascendingOrder) ? new Date(minDate) : new Date(maxDate);
   const monthIncrement = (ascendingOrder) ? 1 : -1;
   const condition = (ascendingOrder) ?
     () => currentDate <= maxDate : () => currentDate >= minDate;
 
   while (condition()) {
-    ticks.push(new Date(currentDate));
+    processedDates.push(new Date(currentDate));
     currentDate.setMonth(currentDate.getMonth() + monthIncrement);
   }
 
+  return processedDates;
+}
+
+const generateTicks = (
+  dates: Date[],
+  displayMode: TimelineDisplayMode,
+) => {
     let tickContainerStyle: React.CSSProperties = {
       height: `${tickContainerSize}vh`,
     };
@@ -76,9 +90,7 @@ const generateTicks = (nodes: TimelineNode[], displayMode: TimelineDisplayMode, 
       }
     }
 
-  return {
-    dates: ticks,
-    elements: ticks.map((date, index) => (
+  return dates.map((date, index) => (
       <div key={index} className='tick-container' style={tickContainerStyle}>
         <div className='tick-label'
           style={tickLabelStyle}>
@@ -87,7 +99,6 @@ const generateTicks = (nodes: TimelineNode[], displayMode: TimelineDisplayMode, 
         <div className='tick-dot'></div>
       </div>
     ))
-  };
 };
 
 const VerticalTimeline: React.FC<TimelineProps> = ({
@@ -100,7 +111,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
   const [hoveredNodes, setHoveredNodes] = useState<number[]>([]);
 
   const filteredNodes = nodes.filter(filterPredicate);
-  const { dates, elements: ticks } = generateTicks(filteredNodes, displayMode, false);
+  const dates = getDates(filteredNodes, false);
   const monthNodeCounts: Record<number, number> = {};
 
   useEffect(() => {
@@ -242,10 +253,12 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
     return <div className='timeline-line' style={lineStyle}></div>;
   }
 
+  const ticksElements = generateTicks(dates, displayMode);
+
   return (
     <div className='timeline-container'>
       {createTimelineLine()}
-      {ticks}
+      {ticksElements}
       {filteredNodes.map((node, index) => createNode(node, index))}
     </div>
   );
