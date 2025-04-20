@@ -61,9 +61,35 @@ const getDates = (
   return processedDates;
 }
 
+// Group nodes by month and year, so they can be referenced later without
+// having to filter through the entire list of nodes.
+// Keep track of the unique indices per node, so react state can be updated
+// on a per-node basis.
+type NodeGroup = {
+  nodes: TimelineNode[];
+  indices: number[];
+};
+
+const groupNodesByDate = (nodes: TimelineNode[]) => {
+  const groupedNodes: Record<string, NodeGroup> = {};
+
+  nodes.forEach((node, index) => {
+    const key = `${node.date.getFullYear()}-${node.date.getMonth()}`;
+    if (!groupedNodes[key]) {
+      groupedNodes[key] = { nodes: [], indices: [] };
+    }
+    groupedNodes[key].nodes.push(node);
+    groupedNodes[key].indices.push(index);
+  });
+
+  return groupedNodes;
+};
+
 const generateTicks = (
+  groupedNodes: Record<string, NodeGroup>,
   dates: Date[],
   displayMode: TimelineDisplayMode,
+  createNode: (node: TimelineNode, index: number) => ReactNode,
 ) => {
     let tickContainerStyle: React.CSSProperties = {
       height: `${tickContainerSize}vh`,
@@ -90,15 +116,26 @@ const generateTicks = (
       }
     }
 
-  return dates.map((date, index) => (
-      <div key={index} className='tick-container' style={tickContainerStyle}>
+  return dates.map((date, dateIndex) => {
+    const key = `${date.getFullYear()}-${date.getMonth()}`;
+    const filteredNodeGroup = groupedNodes[key];
+
+    return (
+      <div key={dateIndex} className='tick-container' style={tickContainerStyle}>
         <div className='tick-label'
           style={tickLabelStyle}>
           {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
         </div>
         <div className='tick-dot'></div>
+        <div className='node-group-container'>
+          {filteredNodeGroup && filteredNodeGroup.nodes.map((node, index) => {
+            const nodeIndex = filteredNodeGroup.indices[index];
+            return createNode(node, nodeIndex);
+          })}
+        </div>
       </div>
-    ))
+    )
+  });
 };
 
 const VerticalTimeline: React.FC<TimelineProps> = ({
@@ -111,6 +148,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
   const [hoveredNodes, setHoveredNodes] = useState<number[]>([]);
 
   const filteredNodes = nodes.filter(filterPredicate);
+  const groupedNodes = groupNodesByDate(filteredNodes);
   const dates = getDates(filteredNodes, false);
   const monthNodeCounts: Record<number, number> = {};
 
@@ -253,13 +291,10 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
     return <div className='timeline-line' style={lineStyle}></div>;
   }
 
-  const ticksElements = generateTicks(dates, displayMode);
-
   return (
     <div className='timeline-container'>
       {createTimelineLine()}
-      {ticksElements}
-      {filteredNodes.map((node, index) => createNode(node, index))}
+      {generateTicks(groupedNodes, dates, displayMode, createNode)}
     </div>
   );
 };
