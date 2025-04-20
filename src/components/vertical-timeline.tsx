@@ -27,7 +27,7 @@ interface TimelineProps {
 
 type NodeFilterPredicate = (node: TimelineNode) => boolean;
 
-const tickContainerSize = 20;
+const DEFAULT_TICK_CONTAINER_SIZE = 20; // in vh
 
 const getDates = (
   nodes: TimelineNode[],
@@ -91,9 +91,7 @@ const generateTicks = (
   displayMode: TimelineDisplayMode,
   createNode: (node: TimelineNode, index: number) => ReactNode,
 ) => {
-    let tickContainerStyle: React.CSSProperties = {
-      height: `${tickContainerSize}vh`,
-    };
+    let tickContainerStyle: React.CSSProperties = {};
     let tickLabelStyle: React.CSSProperties;
     switch (displayMode) {
       case 'minimal-left': {
@@ -119,6 +117,13 @@ const generateTicks = (
   return dates.map((date, dateIndex) => {
     const key = `${date.getFullYear()}-${date.getMonth()}`;
     const filteredNodeGroup = groupedNodes[key];
+
+    const tickContainerMultiplier = filteredNodeGroup ? filteredNodeGroup.nodes.length : 1;
+    const tickContainerSize = DEFAULT_TICK_CONTAINER_SIZE * tickContainerMultiplier;
+    tickContainerStyle = {
+      ...tickContainerStyle,
+      height: `${tickContainerSize}vh`,
+    };
 
     return (
       <div key={dateIndex} className='tick-container' style={tickContainerStyle}>
@@ -226,9 +231,6 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
         }
 
         nodeContainerStyle = {
-          top: `${monthIndex * tickContainerSize}vh`,
-          left: `calc(50% + ${horizontalOffset}px)`,
-          transform: 'translateX(-50%)',
           zIndex: zIndex,
         };
         break;
@@ -243,7 +245,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
           {selectedNodeBehavior()}
         </div>
         nodeContainerStyle = {
-          top: `${monthIndex * tickContainerSize + verticalOffset}vh`,
+          top: `${monthIndex * DEFAULT_TICK_CONTAINER_SIZE + verticalOffset}vh`,
           left: index % 2 ? `calc(10% + ${horizontalOffset}px)` : `calc(60% + ${horizontalOffset}px)`,
           width: '20%',
           zIndex: zIndex,
@@ -273,7 +275,7 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
       case 'minimal-left': {
         lineStyle = {
           width: '5px',
-          left: '0%',
+          left: '3px', // Adjusted to line up with the tick dots
         };
         break;
       }
