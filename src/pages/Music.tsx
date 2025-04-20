@@ -109,7 +109,7 @@ const Music: React.FC = () => {
       <canvas ref={canvasRef} className="music-canvas"></canvas>
       <div className="music-content">
         <ButtonGroup buttons={nodeFilterButtons} buttonType='select' defaultSelected={[0]} />
-        <VerticalTimeline nodes={timelineData} displayMode='minimal-left' filterPredicate={nodeFilter} />
+        <VerticalTimeline nodes={timelineData} displayMode='minimal' filterPredicate={nodeFilter} />
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ interface TimelineProps {
 
 type NodeFilterPredicate = (node: TimelineNode) => boolean;
 
-const DEFAULT_TICK_CONTAINER_SIZE = 20; // in vh
+const DEFAULT_TICK_CONTAINER_SIZE = 25; // in vh
 
 const getDates = (
   nodes: TimelineNode[],
@@ -118,7 +118,7 @@ const generateTicks = (
     const key = `${date.getFullYear()}-${date.getMonth()}`;
     const filteredNodeGroup = groupedNodes[key];
 
-    const tickContainerMultiplier = filteredNodeGroup ? filteredNodeGroup.nodes.length : 1;
+    const tickContainerMultiplier = filteredNodeGroup ? 1 : 0.25;
     const tickContainerSize = DEFAULT_TICK_CONTAINER_SIZE * tickContainerMultiplier;
     tickContainerStyle = {
       ...tickContainerStyle,
@@ -224,7 +224,8 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
           nodeContainerDiv = <div className='node-content'
             onClick={handleMouseClick}
             onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}>
+            onMouseLeave={handleMouseLeave}
+            style={{ width: '50vw' }}>
             <h3 className='node-title'>{node.title}</h3>
             {selectedNodeBehavior()}
           </div>
@@ -293,8 +294,28 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
     return <div className='timeline-line' style={lineStyle}></div>;
   }
 
+  const createTimeLineStyle = () => {
+    let timelineStyle: React.CSSProperties = {};
+    switch (displayMode) {
+      case 'minimal-left': {
+        timelineStyle = {
+          ...timelineStyle,
+          margin: 'auto',
+          maxWidth: '800px',
+        };
+        break;
+      }
+      case 'minimal':
+      case 'default':
+      default:
+        break;
+    }
+
+    return timelineStyle;
+  }
+
   return (
-    <div className='timeline-container'>
+    <div className='timeline-container' style={createTimeLineStyle()}>
       {createTimelineLine()}
       {generateTicks(groupedNodes, dates, displayMode, createNode)}
     </div>
