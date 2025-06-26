@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SlideShow from './slide-show.tsx';
+import {SlideShow} from './slide-show.tsx';
 
 interface GooglePhotoSlideShowProps {
   folderId: string;
@@ -58,7 +58,12 @@ const GooglePhotoSlideShow: React.FC<GooglePhotoSlideShowProps> = ({ folderId, a
     return <div>No images found in the folder.</div>;
   }
 
-  return <SlideShow images={imageUrls} />;
+  const imageUrlsWithType = imageUrls.map(url => ({
+    type: 'image' as const,
+    src: url
+  }));
+
+  return <SlideShow entries={imageUrlsWithType} />;
 };
 
 export {GooglePhotoSlideShow};

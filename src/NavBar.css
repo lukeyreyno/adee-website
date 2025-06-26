@@ -27,7 +27,7 @@
 
 .navbar-logo {
   font-family: 'Nothing You Could Do', cursive;
-  font-size: 1.5em;
+  font-size: 2.75em;
   color: white;
   text-decoration: none;
 }
@@ -48,7 +48,7 @@
 .navbar-links a {
   color: white;
   text-decoration: none;
-  font-size: 1em;
+  font-size: 1.25em;
   transition: color 0.3s;
 }
 

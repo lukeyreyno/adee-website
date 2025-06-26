@@ -88,7 +88,8 @@ const NavBar: React.FC = () => {
         <ul className="navbar-links">
           <li><Link to="/home" onClick={hideNavDropdown}>Home</Link></li>
           <li><Link to="/resume" onClick={hideNavDropdown}>Resume</Link></li>
-          <li><Link to="/music" onClick={hideNavDropdown}>Music</Link></li>
+          <li><Link to="/music" onClick={hideNavDropdown}>History</Link></li>
+          <li><Link to="/reels" onClick={hideNavDropdown}>Reels</Link></li>
           <li><Link to="/events" onClick={hideNavDropdown}>Events</Link></li>
           <li><Link to="/contact" onClick={hideNavDropdown}>Contact</Link></li>
         </ul>
