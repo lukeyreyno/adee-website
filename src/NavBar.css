@@ -22,12 +22,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  height: var(--navbar-height);
+  min-height: var(--navbar-height);
 }
 
 .navbar-logo {
   font-family: 'Nothing You Could Do', cursive;
-  font-size: 2.75em;
+  font-size: 2.5rem;
   color: white;
   text-decoration: none;
 }
