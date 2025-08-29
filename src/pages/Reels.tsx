@@ -8,6 +8,21 @@ const Reels: React.FC = () => {
   const mainYoutubeReels = [
     {
       type: 'youtube' as const,
+      videoId: 'yd3IwdfsvCQ',
+      title: 'Tulsa \'67 -  The Outsiders',
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'hze2pTT-FEU',
+      title: 'Throwing In The Towel - The Outsiders',
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'I2x_Mw1foTc',
+      title: 'Friday At The Drive-In - The Outsiders',
+    },
+    {
+      type: 'youtube' as const,
       videoId: 'BeiJyFJ36KM',
       title: 'Violin Reel',
     },
@@ -34,11 +49,12 @@ const Reels: React.FC = () => {
       videoId: 'hIBmPTVene4',
       title: 'Beethoven Piano Sonata, Op. 2, No. 3, Movement 1 - Allegro con brio'
     },
-    {
-      type: 'youtube' as const,
-      videoId: 'ED9ju8ubvLk',
-      title: 'Chopin Etude Op. 10, No. 4 in C# Minor'
-    }
+    // NOTE(lreyna): Seems like the video was disabled, follow up later
+    // {
+    //   type: 'youtube' as const,
+    //   videoId: 'ED9ju8ubvLk',
+    //   title: 'Chopin Etude Op. 10, No. 4 in C# Minor'
+    // }
   ];
 
   return (
