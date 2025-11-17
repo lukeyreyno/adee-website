@@ -3,8 +3,23 @@ import './Music.css';
 import {MusicNoteScene} from '../three-dee/music-note-scene.ts';
 import {type ButtonData, ButtonGroup} from '../components/button-group.tsx';
 import {type TimelineNode, type NodeFilterPredicate, VerticalTimeline} from '../components/vertical-timeline.tsx';
+import {getEnvVar} from '../utils/env-utils.ts';
+import {fetchSheet} from '../utils/sheets-utils.ts'
 
-const NODE_DATA_URL = './data/portfolio_nodes.json';
+const GOOGLE_DRIVE_API_KEY = getEnvVar('REACT_APP_GOOGLE_DRIVE_API_KEY');
+const MUSIC_DATA_SHEET_ID = '11QQAfIN8xuDkujVXHpwKQjZdTuY47JgFzRvflkjB9Ss'
+
+const USE_EXAMPLE_NODES = false
+const EXAMPLE_NODES_PATH = './data/example_nodes.json'
+
+type RawTimelineNode = {
+  title: string;
+  category?: string;
+  description: string;
+  date?: string | Date | 'current';
+  startDate?: string | Date;
+  endDate?: string | Date | 'current';
+}
 
 const Music: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,52 +31,58 @@ const Music: React.FC = () => {
   );
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    const runAsyncEffect = async () => {
+      if (!canvasRef.current) {
+        return;
+      }
 
-    // Initialize Three.js scene
-    musicNoteSceneRef.current = new MusicNoteScene({
-      widthRatio: 1.0,
-      heightRatio: 0.25,
-      numMusicNotes: 30,
-      canvas: canvasRef.current
-    });
+      // Initialize Three.js scene
+      musicNoteSceneRef.current = new MusicNoteScene({
+        widthRatio: 1.0,
+        heightRatio: 0.25,
+        numMusicNotes: 30,
+        canvas: canvasRef.current
+      });
 
-    // Start the animation loop
-    musicNoteSceneRef.current.animate();
+      // Start the animation loop
+      musicNoteSceneRef.current.animate();
 
-    fetch(NODE_DATA_URL)
-      .then(response => response.json())
-      .then(data => {
-        interface RawTimelineNode {
-          title: string;
-          category?: string;
-          description: string;
-          date?: string | Date | 'current';
-          startDate?: string | Date;
-          endDate?: string | Date | 'current';
+      let rawNodeData: RawTimelineNode[]
+      if (USE_EXAMPLE_NODES) {
+        const response = await fetch(EXAMPLE_NODES_PATH)
+        rawNodeData = await response.json()
+      } else {
+        rawNodeData = await fetchSheet(GOOGLE_DRIVE_API_KEY, MUSIC_DATA_SHEET_ID)
+      }
+
+      if (!rawNodeData || rawNodeData.length === 0) {
+        console.error('No music timeline data found.');
+        return;
+      }
+
+      const parsedData = rawNodeData.map((item: RawTimelineNode) => {
+        if (item.date !== undefined) {
+          item.date = (item.date === 'current') ? new Date() : new Date(item.date);
         }
 
-        const parsedData = data.map((item: RawTimelineNode) => {
-          if (item.date !== undefined) {
-            item.date = (item.date === 'current') ? new Date() : new Date(item.date);
-          }
+        if (item.startDate !== undefined && item.endDate !== undefined) {
+          item.startDate = new Date(item.startDate);
+          item.endDate = (item.endDate === 'current') ? new Date() : new Date(item.endDate);
+          item.date = item.date ?? new Date((item.startDate.getTime() + item.endDate.getTime()) / 2);
+        }
 
-          if (item.startDate !== undefined && item.endDate !== undefined) {
-            item.startDate = new Date(item.startDate);
-            item.endDate = (item.endDate === 'current') ? new Date() : new Date(item.endDate);
-            item.date = item.date ?? new Date((item.startDate.getTime() + item.endDate.getTime()) / 2);
-          }
+        if (item.date === undefined) {
+          console.error('Error parsing timeline data:', item);
+          return null;
+        }
 
-          if (item.date === undefined) {
-            console.error('Error parsing timeline data:', item);
-            return null;
-          }
+        return item;
+      }).filter((item): item is TimelineNode => item !== null) as TimelineNode[];
 
-          return item;
-        }).filter((item: RawTimelineNode) => item !== null) as TimelineNode[];
-        setTimelineData(parsedData);
-      })
-      .catch(error => console.error('Error fetching timeline data:', error));
+      setTimelineData(parsedData);
+    };
+
+    runAsyncEffect();
 
     // Cleanup when the component is unmounted
     return () => {
