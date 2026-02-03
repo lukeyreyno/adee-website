@@ -12,7 +12,13 @@ type SlideYouTubeEntry = {
   title: string;
 };
 
-type SlideEntry = SlideImageEntry | SlideYouTubeEntry;
+type SlideAudioEntry = {
+  type: 'audio';
+  src: string;
+  title: string;
+};
+
+type SlideEntry = SlideImageEntry | SlideYouTubeEntry | SlideAudioEntry;
 
 interface SlideShowProps {
   entries: SlideEntry[];
@@ -29,6 +35,18 @@ const ResolveSlideShowEntry = (entry: SlideEntry, currentIndex: number) => {
           title={entry.title}
           allowFullScreen
         ></iframe>
+      </div>
+    );
+  } else if (entry.type === 'audio') {
+    return (
+      <div className="slide-audio">
+        <div className="audio-container">
+          <h3 className="audio-title">{entry.title}</h3>
+          <audio key={currentIndex} controls className="audio-player">
+            <source src={entry.src} type="audio/mp4" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
       </div>
     );
   }
@@ -79,5 +97,6 @@ const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
 
 export{
   type SlideEntry,
+  type SlideAudioEntry,
   SlideShow,
 };
