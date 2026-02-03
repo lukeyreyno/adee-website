@@ -27,10 +27,7 @@ jobs:
 
     - name: Set up environment variables
       run: |
-        echo "${{ secrets.DOT_ENVIRONMENT }}" > .env
-        set -a
-        source .env
-        set +a
+        echo "${{ secrets.DOT_ENVIRONMENT }}" >> $GITHUB_ENV
 
     - name: Build the project
       run: npm run build
