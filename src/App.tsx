@@ -1,12 +1,12 @@
 import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import NavBar from './NavBar.tsx';
-import Music from './pages/Music.tsx';
-import Home from './pages/Home.tsx';
-import Resume from './pages/Resume.tsx';
-import Reels from './pages/Reels.tsx';
-import Events from './pages/Events.tsx';
-import Contact from './pages/Contact.tsx';
+import NavBar from '@adee/NavBar';
+import Music from '@adee/pages/Music';
+import Home from '@adee/pages/Home';
+import Resume from '@adee/pages/Resume';
+import Reels from '@adee/pages/Reels';
+import Events from '@adee/pages/Events';
+import Contact from '@adee/pages/Contact';
 import './App.css';
 
 const App: React.FC = () => {

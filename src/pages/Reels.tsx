@@ -1,7 +1,7 @@
 import React from 'react';
 import './Reels.css';
 
-import {SlideShow} from '../components/slide-show.tsx';
+import {SlideShow} from '@adee/components/slide-show';
 
 const Reels: React.FC = () => {
   // TODO(lreyna): Get these from a backend service, rather than hardcoding them.

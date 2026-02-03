@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+
+import {useStrings} from '@adee/hooks/useStrings';
+
 import './NavBar.css';
 
 const MOBILE_WIDTH_THRESHOLD = 768;
@@ -8,6 +11,8 @@ const NavBar: React.FC = () => {
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
   const navbarRef = useRef<HTMLDivElement>(null);
+
+  const strings = useStrings();
 
   const updateNavbarHeight = () => {
     if (navbarRef.current) {
@@ -86,12 +91,12 @@ const NavBar: React.FC = () => {
     return (
       <div className={`navbar-links-container ${isNavVisible ? 'visible' : 'hidden'}`}>
         <ul className="navbar-links">
-          <li><Link to="/home" onClick={hideNavDropdown}>Home</Link></li>
-          <li><Link to="/resume" onClick={hideNavDropdown}>Resume</Link></li>
-          <li><Link to="/music" onClick={hideNavDropdown}>History</Link></li>
-          <li><Link to="/reels" onClick={hideNavDropdown}>Reels</Link></li>
-          <li><Link to="/events" onClick={hideNavDropdown}>Events</Link></li>
-          <li><Link to="/contact" onClick={hideNavDropdown}>Contact</Link></li>
+          <li><Link to="/home" onClick={hideNavDropdown}>{strings.navigatorHome}</Link></li>
+          <li><Link to="/resume" onClick={hideNavDropdown}>{strings.navigatorResume}</Link></li>
+          <li><Link to="/music" onClick={hideNavDropdown}>{strings.navigatorMusic}</Link></li>
+          <li><Link to="/reels" onClick={hideNavDropdown}>{strings.navigatorReels}</Link></li>
+          <li><Link to="/events" onClick={hideNavDropdown}>{strings.navigatorEvents}</Link></li>
+          <li><Link to="/contact" onClick={hideNavDropdown}>{strings.navigatorContact}</Link></li>
         </ul>
       </div>
     )

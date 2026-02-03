@@ -30,4 +30,5 @@
   color: #666;
   max-width: 600px;
   margin: 20px;
+  white-space: pre-line;
 }
