@@ -2,10 +2,23 @@ import React from 'react';
 import './Reels.css';
 
 import {SlideShow} from '@adee/components/slide-show';
+import {getEnvVar} from '@adee/utils/env-utils';
+import {getGoogleDriveStreamUrl} from '@adee/utils/google-drive-utils';
 
 const Reels: React.FC = () => {
+  const GOOGLE_DRIVE_API_KEY = getEnvVar('REACT_APP_GOOGLE_DRIVE_API_KEY');
   // TODO(lreyna): Get these from a backend service, rather than hardcoding them.
-  const mainYoutubeReels = [
+  const mainReels = [
+    {
+      type: 'audio' as const,
+      src: getGoogleDriveStreamUrl('1kBX9ch5lfY_xReOIz-yHe0ois-yIiG0L', GOOGLE_DRIVE_API_KEY),
+      title: 'Cool Fugue Final',
+    },
+    {
+      type: 'audio' as const,
+      src: getGoogleDriveStreamUrl('1QjnDyGiZAlcK1FNYXL5Bc5EnRW4kAQIM', GOOGLE_DRIVE_API_KEY),
+      title: 'MFL On The Street Final',
+    },
     {
       type: 'youtube' as const,
       videoId: 'yd3IwdfsvCQ',
@@ -61,7 +74,7 @@ const Reels: React.FC = () => {
     <div className='reels-page'>
       <div className='reels-group'>
         <h1>Reels</h1>
-        <SlideShow entries={mainYoutubeReels} />
+        <SlideShow entries={mainReels} />
       </div>
       <div className='reels-group'>
         <h1>Classical Samples</h1>
