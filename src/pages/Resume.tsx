@@ -9,8 +9,8 @@ const Resume: React.FC = () => {
                     title="Resume Preview"
                     src="https://drive.google.com/file/d/1k1lrBpmI3A_S7GkjQZ4qLAS-khnr6hLO/preview"
                     frameBorder="0"
-                    marginHeight="0"
-                    marginWidth="0">
+                    marginHeight={0}
+                    marginWidth={0}>
                     Loading…
                 </iframe>
             </div>

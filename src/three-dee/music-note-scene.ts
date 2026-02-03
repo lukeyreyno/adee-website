@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-import {ThreeJSOptions, ThreeJSScene} from './threejs-scene.ts';
+import {ThreeJSOptions, ThreeJSScene} from '@adee/three-dee/threejs-scene';
 
 interface MusicNoteSceneOptions extends ThreeJSOptions {
   numMusicNotes: number

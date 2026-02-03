@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {SlideShow} from './slide-show.tsx';
+import {SlideShow} from '@adee/components/slide-show';
 
 interface GooglePhotoSlideShowProps {
   folderId: string;

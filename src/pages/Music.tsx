@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Music.css';
-import {MusicNoteScene} from '../three-dee/music-note-scene.ts';
-import {type ButtonData, ButtonGroup} from '../components/button-group.tsx';
-import {type TimelineNode, type NodeFilterPredicate, VerticalTimeline} from '../components/vertical-timeline.tsx';
-import {getEnvVar} from '../utils/env-utils.ts';
-import {fetchSheet} from '../utils/sheets-utils.ts'
+import {MusicNoteScene} from '@adee/three-dee/music-note-scene';
+import {type ButtonData, ButtonGroup} from '@adee/components/button-group';
+import {type TimelineNode, type NodeFilterPredicate, VerticalTimeline} from '@adee/components/vertical-timeline';
+import {getEnvVar} from '@adee/utils/env-utils';
+import {fetchSheet} from '@adee/utils/sheets-utils';
 
 const GOOGLE_DRIVE_API_KEY = getEnvVar('REACT_APP_GOOGLE_DRIVE_API_KEY');
-const MUSIC_DATA_SHEET_ID = '11QQAfIN8xuDkujVXHpwKQjZdTuY47JgFzRvflkjB9Ss'
+const MUSIC_DATA_SHEET_ID = '11QQAfIN8xuDkujVXHpwKQjZdTuY47JgFzRvflkjB9Ss';
 
-const USE_EXAMPLE_NODES = false
-const EXAMPLE_NODES_PATH = './data/example_nodes.json'
+const USE_EXAMPLE_NODES = false;
+const EXAMPLE_NODES_PATH = './data/example_nodes.json';
 
 type RawTimelineNode = {
   title: string;
