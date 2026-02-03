@@ -2,6 +2,9 @@
 
 ## Set up Environment
 
+Have nvm installed on your system:
+`nvm use`
+
 Have npm installed on your system:
 `npm install`
 
