@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: center;
   text-align: left;
-  padding-top: var(--navbar-height);
 }
 
 .reels-group {

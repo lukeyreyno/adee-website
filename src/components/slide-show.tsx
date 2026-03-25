@@ -56,6 +56,10 @@ const ResolveSlideShowEntry = (entry: SlideEntry, currentIndex: number) => {
 const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  if (entries.length === 0) {
+    return <div className="slideshow-empty">No slides to display.</div>;
+  }
+
   const currentEntry = entries[currentIndex];
   const arrowButtonHeight = currentEntry.type === 'image' ? '100%' : '70%';
 

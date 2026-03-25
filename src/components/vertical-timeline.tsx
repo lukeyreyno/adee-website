@@ -33,6 +33,10 @@ const getDates = (
   nodes: TimelineNode[],
   ascendingOrder: boolean = true
 ) => {
+  if (nodes.length === 0) {
+    return [];
+  }
+
   const dates = nodes.map(node => node.date);
 
   // Set the min and max dates from the nodes, and add a month buffer
@@ -312,6 +316,14 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
     }
 
     return timelineStyle;
+  }
+
+  if (filteredNodes.length === 0) {
+    return (
+      <div className='timeline-container timeline-empty'>
+        No events to display.
+      </div>
+    );
   }
 
   return (

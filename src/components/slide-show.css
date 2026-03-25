@@ -78,7 +78,7 @@
 }
 
 .arrow:hover {
-  background: rgba(1, 1, 1, 0.7);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .left-arrow {
@@ -94,7 +94,6 @@
 .dots {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
@@ -112,4 +111,13 @@
 
 .dot.active {
   background-color: #333;
+}
+
+.slideshow-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background-color: #000;
+  color: #ccc;
 }
