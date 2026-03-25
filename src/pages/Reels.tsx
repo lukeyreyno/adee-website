@@ -10,6 +10,31 @@ const Reels: React.FC = () => {
   // TODO(lreyna): Get these from a backend service, rather than hardcoding them.
   const mainReels = [
     {
+      type: 'youtube' as const,
+      videoId: '6NxNj7S2Tgk',
+      title: 'Overture - My Fair Lady',
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'qf2zIVkoPH8',
+      title: 'Astonishing - Little Women'
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'loEf81xKppA',
+      title: 'Some Things Are Meant To Be - Little Women'
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'gNqwUxPGSY4',
+      title: 'Annie - Conducting Footage 2 (You Won\'t Be An Orphan For Long)'
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'vlNXtDVnhZQ',
+      title: 'Annie - Conducting Footage 1 (Overture - Maybe)'
+    },
+    {
       type: 'audio' as const,
       src: getGoogleDriveStreamUrl('1kBX9ch5lfY_xReOIz-yHe0ois-yIiG0L', GOOGLE_DRIVE_API_KEY),
       title: 'Cool Fugue Final',
@@ -34,21 +59,6 @@ const Reels: React.FC = () => {
       videoId: 'I2x_Mw1foTc',
       title: 'Friday At The Drive-In - The Outsiders',
     },
-    {
-      type: 'youtube' as const,
-      videoId: 'BeiJyFJ36KM',
-      title: 'Violin Reel',
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'A2uiy_tByd8',
-      title: 'Keyboard Conducting Reel'
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'e4cc8El4bU0',
-      title: 'Keyboard Reel'
-    }
   ];
 
   const classicSamples = [
@@ -62,12 +72,11 @@ const Reels: React.FC = () => {
       videoId: 'hIBmPTVene4',
       title: 'Beethoven Piano Sonata, Op. 2, No. 3, Movement 1 - Allegro con brio'
     },
-    // NOTE(lreyna): Seems like the video was disabled, follow up later
-    // {
-    //   type: 'youtube' as const,
-    //   videoId: 'ED9ju8ubvLk',
-    //   title: 'Chopin Etude Op. 10, No. 4 in C# Minor'
-    // }
+    {
+      type: 'youtube' as const,
+      videoId: 'ED9ju8ubvLk',
+      title: 'Chopin Etude Op. 10, No. 4 in C# Minor'
+    }
   ];
 
   return (
