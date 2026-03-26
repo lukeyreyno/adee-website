@@ -102,11 +102,14 @@
 .dot {
   width: 10px;
   height: 10px;
+  padding: 0;
+  border: none;
   margin: 0 5px;
   background-color: #ccc;
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s;
+  flex-shrink: 0;
 }
 
 .dot.active {
@@ -120,4 +123,34 @@
   height: 400px;
   background-color: #000;
   color: #ccc;
+}
+
+@media (max-width: 768px) {
+  .slideshow-viewport,
+  .slideshow-empty {
+    height: 250px;
+  }
+
+  .arrow {
+    font-size: 1.5rem;
+    padding: 0.25rem;
+  }
+
+  .left-arrow,
+  .right-arrow {
+    padding: 0 3%;
+  }
+
+  .audio-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .audio-title {
+    font-size: 1.1rem;
+  }
+
+  .audio-player {
+    width: 100%;
+  }
 }

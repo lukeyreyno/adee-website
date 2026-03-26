@@ -265,7 +265,12 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
         className='node-container'>
         <div className='node-dot'
           style={{ backgroundColor: chooseDotColor() }}
+          role="button"
+          tabIndex={0}
+          aria-label={node.title}
+          aria-expanded={selectedNode === index}
           onClick={handleMouseClick}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleMouseClick(); }}}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
         </div>

@@ -77,22 +77,25 @@ const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
 
   return (
     <div className="slideshow">
-      <div className="slideshow-viewport">
-        <button className="arrow left-arrow" onClick={goToPrevious} style={{ height: arrowButtonHeight }}>
+      <div className="slideshow-viewport" role="region" aria-roledescription="carousel" aria-label="Slideshow">
+        <button className="arrow left-arrow" onClick={goToPrevious} style={{ height: arrowButtonHeight }} aria-label="Previous slide">
           &#8249;
         </button>
         {ResolveSlideShowEntry(entries[currentIndex], currentIndex)}
-        <button className="arrow right-arrow" onClick={goToNext} style={{ height: arrowButtonHeight }}>
+        <button className="arrow right-arrow" onClick={goToNext} style={{ height: arrowButtonHeight }} aria-label="Next slide">
           &#8250;
         </button>
       </div>
-      <div className="dots">
-        {entries.map((_, index) => (
-          <span
+      <div className="dots" role="tablist" aria-label="Slide navigation">
+        {entries.map((entry, index) => (
+          <button
             key={index}
+            role="tab"
+            aria-selected={index === currentIndex}
+            aria-label={entry.type === 'image' ? `Slide ${index + 1}` : entry.title}
             className={`dot ${index === currentIndex ? 'active' : ''}`}
             onClick={() => goToSlide(index)}
-          ></span>
+          ></button>
         ))}
       </div>
     </div>
