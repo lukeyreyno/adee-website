@@ -18,7 +18,9 @@ const Home: React.FC = () => {
     <div className='home-page'>
       <img src={HEADSHOT_IMG_PATH} alt='Headshot' className='headshot' />
       <h1 className='title'>{strings.homeName}</h1>
-      <GooglePhotoSlideShow folderId={FOLDER_ID} apiKey={GOOGLE_DRIVE_API_KEY} />
+      <div className="home-slideshow">
+        <GooglePhotoSlideShow folderId={FOLDER_ID} apiKey={GOOGLE_DRIVE_API_KEY} />
+      </div>
         <div className='bio'>
             <p>{strings.homeBioSection}</p>
         </div>

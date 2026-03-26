@@ -2,9 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: left;
   padding-top: var(--navbar-height);
+  padding-bottom: 4rem;
+  min-height: calc(100vh - var(--navbar-height));
+  gap: 3rem;
 }
 
 .reels-group {
@@ -12,5 +14,29 @@
   font-family: sans-serif;
   text-align: center;
   width: 100%;
-  padding-bottom: 5%;
+  max-width: 1000px;
+  padding: 0 1.5rem;
+}
+
+.reels-group h1 {
+  font-size: 1.75rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+  color: #222;
+}
+
+@media (max-width: 768px) {
+  .reels-page {
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .reels-group {
+    padding: 0 1rem;
+  }
+
+  .reels-group h1 {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
 }

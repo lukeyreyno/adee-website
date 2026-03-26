@@ -43,6 +43,16 @@
     font-size: 1.8rem;
   }
 
+.home-slideshow {
+  width: 100%;
+  max-width: 1000px;
+  padding: 0 1.5rem;
+}
+
+  .home-slideshow {
+    padding: 0 1rem;
+  }
+
   .bio {
     font-size: 1rem;
     max-width: calc(100% - 40px);
