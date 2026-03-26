@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import './slide-show.css';
 
 type SlideImageEntry = {
@@ -24,9 +24,25 @@ interface SlideShowProps {
   entries: SlideEntry[];
 }
 
-const ResolveSlideShowEntry = (entry: SlideEntry, currentIndex: number) => {
+interface ResolveSlideShowEntryProps {
+  entry: SlideEntry;
+  currentIndex: number;
+  imageLoading: boolean;
+  onImageLoad: () => void;
+  onImageError: () => void;
+}
+
+const ResolveSlideShowEntry = ({entry, currentIndex, imageLoading, onImageLoad, onImageError}: ResolveSlideShowEntryProps) => {
   if (entry.type === 'image') {
-    return <img src={entry.src} alt={`Slide ${currentIndex + 1}`} className="slide-image" />;
+    return (
+      <img
+        src={entry.src}
+        alt={`Slide ${currentIndex + 1}`}
+        className={`slide-image ${imageLoading ? 'loading' : ''}`}
+        onLoad={onImageLoad}
+        onError={onImageError}
+      />
+    );
   } else if (entry.type === 'youtube') {
     return (
       <div className="slide-youtube">
@@ -55,6 +71,19 @@ const ResolveSlideShowEntry = (entry: SlideEntry, currentIndex: number) => {
 
 const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [imageLoading, setImageLoading] = useState(false);
+
+  useEffect(() => {
+    setImageLoading(true);
+  }, [currentIndex]);
+
+  const handleImageLoad = useCallback(() => {
+    setImageLoading(false);
+  }, []);
+
+  const handleImageError = useCallback(() => {
+    setImageLoading(false);
+  }, []);
 
   if (entries.length === 0) {
     return <div className="slideshow-empty">No slides to display.</div>;
@@ -81,7 +110,12 @@ const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
         <button className="arrow left-arrow" onClick={goToPrevious} style={{ height: arrowButtonHeight }} aria-label="Previous slide">
           &#8249;
         </button>
-        {ResolveSlideShowEntry(entries[currentIndex], currentIndex)}
+        {ResolveSlideShowEntry({entry: entries[currentIndex], currentIndex, imageLoading, onImageLoad: handleImageLoad, onImageError: handleImageError})}
+        {imageLoading && currentEntry.type === 'image' && (
+          <div className="slideshow-spinner-overlay">
+            <div className="slideshow-spinner"></div>
+          </div>
+        )}
         <button className="arrow right-arrow" onClick={goToNext} style={{ height: arrowButtonHeight }} aria-label="Next slide">
           &#8250;
         </button>

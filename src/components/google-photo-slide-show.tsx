@@ -47,7 +47,12 @@ const GooglePhotoSlideShow: React.FC<GooglePhotoSlideShowProps> = ({ folderId, a
   }, [folderId, apiKey]);
 
   if (loading) {
-    return <div role="status">Loading images...</div>;
+    return (
+      <div className="slideshow-loading" role="status">
+        <div className="slideshow-spinner"></div>
+        <span>Loading images...</span>
+      </div>
+    );
   }
 
   if (error) {
