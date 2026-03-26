@@ -90,7 +90,6 @@ const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
   }
 
   const currentEntry = entries[currentIndex];
-  const arrowButtonHeight = currentEntry.type === 'image' ? '100%' : '70%';
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? entries.length - 1 : prevIndex - 1));
@@ -107,7 +106,7 @@ const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
   return (
     <div className="slideshow">
       <div className="slideshow-viewport" role="region" aria-roledescription="carousel" aria-label="Slideshow">
-        <button className="arrow left-arrow" onClick={goToPrevious} style={{ height: arrowButtonHeight }} aria-label="Previous slide">
+        <button className="arrow left-arrow" onClick={goToPrevious} aria-label="Previous slide">
           &#8249;
         </button>
         {ResolveSlideShowEntry({entry: entries[currentIndex], currentIndex, imageLoading, onImageLoad: handleImageLoad, onImageError: handleImageError})}
@@ -116,7 +115,7 @@ const SlideShow: React.FC<SlideShowProps> = ({ entries }) => {
             <div className="slideshow-spinner"></div>
           </div>
         )}
-        <button className="arrow right-arrow" onClick={goToNext} style={{ height: arrowButtonHeight }} aria-label="Next slide">
+        <button className="arrow right-arrow" onClick={goToNext} aria-label="Next slide">
           &#8250;
         </button>
       </div>
