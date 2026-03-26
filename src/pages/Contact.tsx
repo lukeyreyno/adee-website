@@ -9,8 +9,6 @@ const Contact: React.FC = () => {
                 <iframe
                     title="Contact Form"
                     src="https://docs.google.com/forms/d/e/1FAIpQLSdk9u-o0iqMbrKuJNmDEikDKapVauR7CwpG4EE_BGfQSfwoLg/viewform?embedded=true"
-                    width="640"
-                    height="800"
                     frameBorder="0"
                     marginHeight={0}
                     marginWidth={0}>

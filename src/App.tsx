@@ -13,7 +13,7 @@ const App: React.FC = () => {
     return (
         <HashRouter>
             <NavBar />
-            <main className="content">
+            <main className="content" id="main-content">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/home" element={<Home />} />

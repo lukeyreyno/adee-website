@@ -33,6 +33,10 @@ const getDates = (
   nodes: TimelineNode[],
   ascendingOrder: boolean = true
 ) => {
+  if (nodes.length === 0) {
+    return [];
+  }
+
   const dates = nodes.map(node => node.date);
 
   // Set the min and max dates from the nodes, and add a month buffer
@@ -261,7 +265,12 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
         className='node-container'>
         <div className='node-dot'
           style={{ backgroundColor: chooseDotColor() }}
+          role="button"
+          tabIndex={0}
+          aria-label={node.title}
+          aria-expanded={selectedNode === index}
           onClick={handleMouseClick}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleMouseClick(); }}}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
         </div>
@@ -312,6 +321,14 @@ const VerticalTimeline: React.FC<TimelineProps> = ({
     }
 
     return timelineStyle;
+  }
+
+  if (filteredNodes.length === 0) {
+    return (
+      <div className='timeline-container timeline-empty'>
+        No events to display.
+      </div>
+    );
   }
 
   return (

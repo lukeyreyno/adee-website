@@ -22,8 +22,10 @@
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  min-width: 100px;
+  min-width: 80px;
   max-width: 200px;
+  flex: 1 1 auto;
+  text-align: center;
 }
 
 .button-group button:hover {
@@ -34,6 +36,7 @@
   background-color: #004085;
 }
 
-.button-group button:focus {
-  outline: none;
+.button-group button:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
 }

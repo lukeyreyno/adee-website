@@ -32,3 +32,20 @@
   margin: 20px;
   white-space: pre-line;
 }
+
+@media (max-width: 768px) {
+  .headshot {
+    width: 120px;
+    height: 120px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .bio {
+    font-size: 1rem;
+    max-width: calc(100% - 40px);
+    margin: 10px 20px;
+  }
+}

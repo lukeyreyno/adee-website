@@ -41,6 +41,7 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({buttons, buttonType, defaultSe
             }
           }}
           className={selectedNode === index ? 'button-selected' : 'button-default'}
+          aria-pressed={buttonType === 'select' ? selectedNode === index : undefined}
         >
           {button.label}
         </button>
