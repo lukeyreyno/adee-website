@@ -1,12 +1,22 @@
 :root {
   --breakpoint-mobile: 768px;
+
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #666666;
+  --color-primary: #00bcd4;
+  --color-navbar: rgba(30, 30, 30, 0.85);
+
+  /* Typography */
+  --font-brand: 'Nothing You Could Do', cursive;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
+  color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

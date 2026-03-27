@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap');
-
 :root {
   --navbar-height: 60px;
 }
@@ -9,10 +7,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333;
+  background: var(--color-navbar);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: white;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   user-select: none;
   -moz-user-select: none;
 }
@@ -23,33 +24,49 @@
   align-items: center;
   padding: 0 20px;
   min-height: var(--navbar-height);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .navbar-logo {
-  font-family: 'Nothing You Could Do', cursive;
+  font-family: var(--font-brand);
   font-size: 2.5rem;
   color: white;
   text-decoration: none;
 }
 
 .navbar-links {
-  font-family: 'Nothing You Could Do', cursive;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
   list-style: none;
   display: flex;
-  gap: 15px;
+  gap: 24px;
   margin: 0;
   padding: 0;
 }
 
 .navbar-links a {
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  font-size: 1.25em;
-  transition: color 0.3s;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
-.navbar-links a:hover {
-  color: #00bcd4;
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: white;
+}
+
+.navbar-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-primary);
 }
 
 .navbar-toggle {
@@ -57,8 +74,14 @@
   background: none;
   border: none;
   color: white;
-  font-size: 2.5em;
   cursor: pointer;
+  padding: 8px;
+}
+
+.navbar-toggle svg {
+  display: block;
+  width: 24px;
+  height: 24px;
 }
 
 .skip-nav-link {
@@ -85,34 +108,33 @@
 
 @media (max-width: 768px) {
   .navbar-links-container {
-    align-items: flex-start;
-    flex-direction: column;
-    height: auto;
-    border-top: 1px solid #fff;
+    background: var(--color-navbar);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    width: 100%;
     padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .navbar-links {
     flex-direction: column;
+    gap: 0;
     width: 100%;
   }
 
   .navbar-links li {
-    margin: 0;
     text-align: center;
   }
 
   .navbar-links li a {
     display: block;
-    width: 100%;
-    padding: 0;
-    text-align: center;
-    color: white;
-    text-decoration: none;
+    padding: 12px 0;
   }
 
   .navbar-toggle {
     display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .navbar-links-container.hidden {
