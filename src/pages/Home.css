@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap');
-
 .home-page {
   display: flex;
   flex-direction: column;
@@ -21,12 +19,12 @@
   font-size: 2.5rem;
   color: #333;
   margin-bottom: 10px;
-  font-family: 'Nothing You Could Do', cursive;
+  font-family: var(--font-brand);
 }
 
 .bio {
   font-size: 1.2rem;
-  font-family: sans-serif;
+  font-family: var(--font-body);
   color: #666;
   max-width: 600px;
   margin: 20px;
@@ -42,12 +40,6 @@
   .title {
     font-size: 1.8rem;
   }
-
-.home-slideshow {
-  width: 100%;
-  max-width: 1000px;
-  padding: 0 1.5rem;
-}
 
   .home-slideshow {
     padding: 0 1rem;
