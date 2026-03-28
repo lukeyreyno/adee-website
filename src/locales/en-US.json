@@ -11,5 +11,23 @@
   "navigatorMusic": "Music",
   "navigatorReels": "Reels",
   "navigatorResume": "Resume",
-  "navigatorContact": "Contact"
+  "navigatorContact": "Contact",
+  "homeTestimonialsHeading": "Kind Words",
+  "homeTestimonials": [
+    {
+      "quote": "Amanda Dee's musical direction, with Sharon Ahn joining her on the piano, provides first-rate accompaniment for the glorious melodies and clever lyrics.",
+      "attribution": "NJ Arts Maven",
+      "url": "https://njartsmaven.substack.com/p/review-atgs-glorious-my-fair-lady"
+    },
+    {
+      "quote": "Masterfully directed by ATG's Producing Artistic Director, Jim Vagias with choreography by Victoria Casillo and Musical Direction by Amanda Dee this show is a real crowd-pleaser.",
+      "attribution": "BroadwayWorld",
+      "url": "https://www.broadwayworld.com/new-jersey/article/Review-MY-FAIR-LADY-by-American-Theater-Group-Marvelous-20260303"
+    },
+    {
+      "quote": "Singular instruments often sing in mesmerizing duets with the actors onstage, especially Amanda Dee's violin and Myra Chachkin's cello.",
+      "attribution": "Theatre Eddys",
+      "url": "https://theatreeddys.com/2025/06/next-to-normal-2.html"
+    }
+  ]
 }
