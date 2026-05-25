@@ -11,8 +11,23 @@ const Reels: React.FC = () => {
   const mainReels = [
     {
       type: 'youtube' as const,
-      videoId: '6NxNj7S2Tgk',
-      title: 'Overture - My Fair Lady',
+      videoId: 'DeKqMvN08LA',
+      title: 'Get Me To The Church On Time (Dance Break) - My Fair Lady',
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'ZZ6RbobrK0w',
+      title: 'The Rain In Spain - My Fair Lady',
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'hze2pTT-FEU',
+      title: 'Throwing In The Towel - The Outsiders',
+    },
+    {
+      type: 'youtube' as const,
+      videoId: 'I2x_Mw1foTc',
+      title: 'Friday At The Drive-In - The Outsiders',
     },
     {
       type: 'youtube' as const,
@@ -35,6 +50,11 @@ const Reels: React.FC = () => {
       title: 'Annie - Conducting Footage 1 (Overture - Maybe)'
     },
     {
+      type: 'youtube' as const,
+      videoId: '6NxNj7S2Tgk',
+      title: 'Overture - My Fair Lady',
+    },
+    {
       type: 'audio' as const,
       src: getGoogleDriveStreamUrl('1kBX9ch5lfY_xReOIz-yHe0ois-yIiG0L', GOOGLE_DRIVE_API_KEY),
       title: 'Cool Fugue Final',
@@ -48,16 +68,6 @@ const Reels: React.FC = () => {
       type: 'youtube' as const,
       videoId: 'yd3IwdfsvCQ',
       title: 'Tulsa \'67 -  The Outsiders',
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'hze2pTT-FEU',
-      title: 'Throwing In The Towel - The Outsiders',
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'I2x_Mw1foTc',
-      title: 'Friday At The Drive-In - The Outsiders',
     },
   ];
 
