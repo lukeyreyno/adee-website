@@ -74,8 +74,9 @@
 
 .arrow {
   position: absolute;
-  top: 0;
-  height: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
   min-width: 60px;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
   color: white;
