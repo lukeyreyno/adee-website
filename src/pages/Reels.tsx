@@ -4,56 +4,17 @@ import './Reels.css';
 import {SlideShow} from '@adee/components/slide-show';
 import {getEnvVar} from '@adee/utils/env-utils';
 import {getGoogleDriveStreamUrl} from '@adee/utils/google-drive-utils';
+import {useYouTubePlaylist} from '@adee/hooks/use-youtube-playlist';
+
+const REELS_PLAYLIST_ID = 'PLLGEPRWSME6GV0vol_Rqumi15IstdNZGy';
+const CLASSICAL_PLAYLIST_ID = 'PLLGEPRWSME6G6L6hq0C7uMWg3zxt72GVi';
 
 const Reels: React.FC = () => {
   const GOOGLE_DRIVE_API_KEY = getEnvVar('REACT_APP_GOOGLE_DRIVE_API_KEY');
-  // TODO(lreyna): Get these from a backend service, rather than hardcoding them.
-  const mainReels = [
-    {
-      type: 'youtube' as const,
-      videoId: 'DeKqMvN08LA',
-      title: 'Get Me To The Church On Time (Dance Break) - My Fair Lady',
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'ZZ6RbobrK0w',
-      title: 'The Rain In Spain - My Fair Lady',
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'hze2pTT-FEU',
-      title: 'Throwing In The Towel - The Outsiders',
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'I2x_Mw1foTc',
-      title: 'Friday At The Drive-In - The Outsiders',
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'qf2zIVkoPH8',
-      title: 'Astonishing - Little Women'
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'loEf81xKppA',
-      title: 'Some Things Are Meant To Be - Little Women'
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'gNqwUxPGSY4',
-      title: 'Annie - Conducting Footage 2 (You Won\'t Be An Orphan For Long)'
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'vlNXtDVnhZQ',
-      title: 'Annie - Conducting Footage 1 (Overture - Maybe)'
-    },
-    {
-      type: 'youtube' as const,
-      videoId: '6NxNj7S2Tgk',
-      title: 'Overture - My Fair Lady',
-    },
+  const {entries: reelsEntries, loading: reelsLoading, error: reelsError} = useYouTubePlaylist(REELS_PLAYLIST_ID, GOOGLE_DRIVE_API_KEY);
+  const {entries: classicalEntries, loading: classicalLoading, error: classicalError} = useYouTubePlaylist(CLASSICAL_PLAYLIST_ID, GOOGLE_DRIVE_API_KEY);
+
+  const audioEntries = [
     {
       type: 'audio' as const,
       src: getGoogleDriveStreamUrl('1kBX9ch5lfY_xReOIz-yHe0ois-yIiG0L', GOOGLE_DRIVE_API_KEY),
@@ -64,40 +25,36 @@ const Reels: React.FC = () => {
       src: getGoogleDriveStreamUrl('1QjnDyGiZAlcK1FNYXL5Bc5EnRW4kAQIM', GOOGLE_DRIVE_API_KEY),
       title: 'MFL On The Street Final',
     },
-    {
-      type: 'youtube' as const,
-      videoId: 'yd3IwdfsvCQ',
-      title: 'Tulsa \'67 -  The Outsiders',
-    },
   ];
 
-  const classicSamples = [
-    {
-      type: 'youtube' as const,
-      videoId: 'OMuqP9UwG5M',
-      title: 'Beethoven Piano Concerto No. 5, Op. 73, Movement 1 - Allegro'
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'hIBmPTVene4',
-      title: 'Beethoven Piano Sonata, Op. 2, No. 3, Movement 1 - Allegro con brio'
-    },
-    {
-      type: 'youtube' as const,
-      videoId: 'ED9ju8ubvLk',
-      title: 'Chopin Etude Op. 10, No. 4 in C# Minor'
-    }
-  ];
+  if (reelsLoading || classicalLoading) {
+    return (
+      <div className='reels-page'>
+        <div className="slideshow-loading">
+          <div className="slideshow-spinner"></div>
+          <p>Loading reels...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (reelsError || classicalError) {
+    return (
+      <div className='reels-page'>
+        <p>Failed to load reels. Please try again later.</p>
+      </div>
+    );
+  }
 
   return (
     <div className='reels-page'>
       <div className='reels-group'>
         <h1>Reels</h1>
-        <SlideShow entries={mainReels} />
+        <SlideShow entries={[...reelsEntries, ...audioEntries]} />
       </div>
       <div className='reels-group'>
         <h1>Classical Samples</h1>
-        <SlideShow entries={classicSamples} />
+        <SlideShow entries={classicalEntries} />
       </div>
     </div>
   );
