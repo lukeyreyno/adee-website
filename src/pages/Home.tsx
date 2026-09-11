@@ -27,7 +27,9 @@ const Home: React.FC = () => {
           heading={strings.homeTestimonialsHeading}
         />
         <div className='bio'>
-            <p>{strings.homeBioSection}</p>
+          {strings.homeBioParagraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
         </div>
     </div>
   );

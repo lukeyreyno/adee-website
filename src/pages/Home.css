@@ -28,7 +28,14 @@
   color: #666;
   max-width: 600px;
   margin: 20px;
-  white-space: pre-line;
+}
+
+.bio p {
+  margin: 0 0 1.25rem;
+}
+
+.bio p:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
